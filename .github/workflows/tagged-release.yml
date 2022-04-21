@@ -1,0 +1,29 @@
+---
+name: "tagged-release"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  tagged-release:
+    name: "Tagged Release"
+    runs-on: "ubuntu-latest"
+
+    steps:
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'liberica' # See 'Supported distributions' for available options
+          java-version: '17'
+
+      - name: Build Image
+        run: ./mvnw -Pnative clean package -DskipTests
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            LICENSE.txt
+            *.jar

@@ -25,5 +25,5 @@ jobs:
           repo_token: "${{ secrets.GH_TOKEN }}"
           prerelease: false
           files: |
-            LICENSE.txt
-            *.jar
+            LICENSE
+            ./target/plusplus

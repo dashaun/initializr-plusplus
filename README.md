@@ -34,7 +34,8 @@ curl https://start.spring.io/starter.tgz -d dependencies=web,data-jpa -d type=ma
 ./initializr-plusplus help
 # Add jgitver extension
 ./initializr-plusplus jgitver
-# 
+# Interactive mode
+./initializr-plusplus
 ```
 
 ## Usage

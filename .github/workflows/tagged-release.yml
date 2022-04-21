@@ -12,10 +12,12 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      - uses: actions/setup-java@v2
+      - uses: graalvm/setup-graalvm@v1
         with:
-          distribution: 'liberica' # See 'Supported distributions' for available options
+          version: 'latest'
           java-version: '17'
+          components: 'native-image'
+          github-token: "${{ secrets.GH_TOKEN }}"
 
       - uses: actions/checkout@v3
         with:

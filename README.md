@@ -58,11 +58,8 @@ Built-In Commands
 
 Execute following command to find new dependencies
 
-````
-./mvnw versions:display-dependency-updates
-````
+- `./mvnw versions:display-dependency-updates`
 
-<!-- ROADMAP -->
 ### Roadmap
 
 - [X] jgitver extension
@@ -79,12 +76,10 @@ Execute following command to find new dependencies
 
 See the [open issues](https://github.com/dashaun/spring-initializer-next-step/issues) for a list of proposed features (and known issues).
 
-<!-- CONTRIBUTING -->
 ### Contributing
 
 Pull-requests are welcomed!
 
-<!-- LICENSE -->
 ### License
 
 Distributed under the Apache-2.0 License. See `LICENSE` for more information.

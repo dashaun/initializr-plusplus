@@ -82,6 +82,9 @@
             <groupId>org.graalvm.buildtools</groupId>
             <artifactId>native-maven-plugin</artifactId>
             <version>${native-buildtools.version}</version>
+            <configuration>
+              <imageName>initializr-plusplus-linux-amd64</imageName>
+            </configuration>
             <extensions>true</extensions>
             <executions>
               <execution>

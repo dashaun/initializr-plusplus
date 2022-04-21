@@ -32,4 +32,4 @@ jobs:
           prerelease: false
           files: |
             LICENSE
-            ./target/plusplus
+            ./target/initializr-plusplus-linux-amd64

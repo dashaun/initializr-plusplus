@@ -13,7 +13,7 @@
 
 * [Spring Shell](https://spring.io/projects/spring-shell)
 
-## | [Usage](#usage) | [License](#license) | | [Develop](#develop)
+## | [Usage](#usage) | [Develop](#develop) |
 
 ## Usage
 
@@ -39,10 +39,28 @@ Built-In Commands
         
 ```
 
+## Develop
 
-## See Also
+### Normal build
 
-[acre-terraform-cron-replication](https://github.com/redisgeek/acre-terraform-cron-replication)
+- `./mvnw clean package`
+
+### Native build
+
+- `./mvnw clean package -Pnative`
+
+### Release
+
+- `git tag v#.#.#`
+- `git push --follow-tags origin main`
+
+## Maintaining up-to-date dependencies
+
+Execute following command to find new dependencies
+
+````
+./mvnw versions:display-dependency-updates
+````
 
 <!-- ROADMAP -->
 ## Roadmap
@@ -70,29 +88,6 @@ Pull-requests are welcomed!
 ## License
 
 Distributed under the Apache-2.0 License. See `LICENSE` for more information.
-
-## Develop
-
-### Normal build
-
-- `./mvnw clean package`
-
-### Native build
-
-- `./mvnw clean package -Pnative`
-
-### Release
-
-- `git tag v#.#.#`
-- `git push --follow-tags origin main`
-
-## Maintaining up-to-date dependencies
-
-Execute following command to find new dependencies
-
-````
-./mvnw versions:display-dependency-updates
-````
 
 [contributors-shield]: https://img.shields.io/github/contributors/dashaun/spring-initializer-next-step.svg?style=for-the-badge
 [contributors-url]: https://github.com/dashaun/spring-initializer-next-step/graphs/contributors

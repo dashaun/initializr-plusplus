@@ -12,7 +12,6 @@
   <artifactId>plusplus</artifactId>
   <version>0</version>
   <name>${project.groupId}:${project.artifactId}</name>
-  <description>Demo project for Spring Boot</description>
   <properties>
     <java.version>17</java.version>
     <spring-native.version>0.11.4</spring-native.version>
@@ -64,22 +63,6 @@
   <profiles>
     <profile>
       <id>native</id>
-      <properties>
-        <repackage.classifier>exec</repackage.classifier>
-        <native-buildtools.version>0.9.11</native-buildtools.version>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>org.springframework.experimental</groupId>
-          <artifactId>spring-native</artifactId>
-          <version>${spring-native.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.junit.platform</groupId>
-          <artifactId>junit-platform-launcher</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
       <build>
         <plugins>
           <plugin>
@@ -126,6 +109,22 @@
           </plugin>
         </plugins>
       </build>
+      <properties>
+        <native-buildtools.version>0.9.11</native-buildtools.version>
+        <repackage.classifier>exec</repackage.classifier>
+      </properties>
+      <dependencies>
+        <dependency>
+          <groupId>org.springframework.experimental</groupId>
+          <artifactId>spring-native</artifactId>
+          <version>${spring-native.version}</version>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-launcher</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
       <pluginRepositories>
         <pluginRepository>
           <id>spring-releases</id>

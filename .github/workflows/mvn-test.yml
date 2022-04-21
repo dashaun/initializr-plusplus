@@ -21,6 +21,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
+          distribution: 'liberica' # See 'Supported distributions' for available options
           java-version: '17'
       #Set up Maven cache
       - name: Cache Maven packages

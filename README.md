@@ -7,7 +7,17 @@
 [![mvn test](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/mvn-test.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/mvn-test.yml)
 
 # initializr-plusplus
-## CLI for making changes to [Spring Initialzr](https://start.spring.io) projects.
+### CLI for making changes to [Spring Initializr](https://start.spring.io) projects.
+
+- Use [Spring Initializr](https://start.spring.io) it is awesome, I highly recommend it.
+- Then get your project to production.
+- This tool decreases the amount of time between `T-Initialize` and `T-Production`
+  - This improves the `Fifth Metric` Mean Time To Dopamine (MTTD)
+- This tool provides commands via CLI and interactive shell
+  - Add the `jtigver` Maven Extension
+  - Update the `project-description`
+  - Update the `project-name`
+  - Update the `project-version`
 
 ## | [Usage](#usage) | [Built With](#built-with) | [Develop](#develop) |
 

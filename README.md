@@ -13,3 +13,13 @@ Spring Shell CLI for making changes to [Spring Initialzr](start.spring.io) proje
 - [X] Update the prompt
 - [ ] gitcommit id plugin
 - [ ] registry placeholders in <properties>
+
+## To create a release
+
+The release will get created by the github action.
+It is triggered by a new tag that matches the regex.
+
+```text
+git tag v#.#.#
+git push origin v#.#.#
+```

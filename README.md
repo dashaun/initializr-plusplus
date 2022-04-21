@@ -2,7 +2,7 @@
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+[![License][license-shield]][license-url]
 
 [![mvn test](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/mvn-test.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/mvn-test.yml)
 
@@ -54,7 +54,7 @@ Built-In Commands
 - `git tag v#.#.#`
 - `git push --follow-tags origin main`
 
-## Maintaining up-to-date dependencies
+### Maintaining up-to-date dependencies
 
 Execute following command to find new dependencies
 
@@ -63,7 +63,7 @@ Execute following command to find new dependencies
 ````
 
 <!-- ROADMAP -->
-## Roadmap
+### Roadmap
 
 - [X] jgitver extension
 - [X] jgitver config
@@ -80,12 +80,12 @@ Execute following command to find new dependencies
 See the [open issues](https://github.com/dashaun/spring-initializer-next-step/issues) for a list of proposed features (and known issues).
 
 <!-- CONTRIBUTING -->
-## Contributing
+### Contributing
 
 Pull-requests are welcomed!
 
 <!-- LICENSE -->
-## License
+### License
 
 Distributed under the Apache-2.0 License. See `LICENSE` for more information.
 

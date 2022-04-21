@@ -79,7 +79,7 @@ Built-In Commands
 ### Release
 
 - `git tag v#.#.#`
-- `git push --follow-tags origin main`
+- `git push origin v#.#.#`
 
 ### Maintaining up-to-date dependencies
 

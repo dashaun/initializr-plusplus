@@ -9,11 +9,7 @@
 # initializr-plusplus
 ## CLI for making changes to [Spring Initialzr](https://start.spring.io) projects.
 
-### Built with:
-
-* [Spring Shell](https://spring.io/projects/spring-shell)
-
-## | [Usage](#usage) | [Develop](#develop) |
+## | [Usage](#usage) | [Built With](#built-with) | [Develop](#develop) |
 
 ## Usage
 
@@ -38,6 +34,10 @@ Built-In Commands
         version: Show version info
         
 ```
+
+## Built with:
+
+* [Spring Shell](https://spring.io/projects/spring-shell)
 
 ## Develop
 

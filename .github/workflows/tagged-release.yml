@@ -17,6 +17,10 @@ jobs:
           distribution: 'liberica' # See 'Supported distributions' for available options
           java-version: '17'
 
+      - uses: actions/checkout@v3
+        with:
+          ref: '${{github.ref_name}}'
+
       - name: Build Image
         run: ./mvnw -Pnative clean package -DskipTests
 

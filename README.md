@@ -19,7 +19,23 @@
   - Update the `project-name`
   - Update the `project-version`
 
-## | [Usage](#usage) | [Built With](#built-with) | [Develop](#develop) |
+## | [Quick Start](#quick-start) | [Usage](#usage) | [Built With](#built-with) | [Develop](#develop) |
+
+## Quick Start
+
+Download the latest release and put it on your path.
+
+```bash
+# Download 
+curl -L https://github.com/dashaun/spring-initializer-next-step/releases/download/v0.0.1/initializr-plusplus-linux-amd64 --output initializr-plusplus
+# Download and extract an example project from start.sprint.io
+curl https://start.spring.io/starter.tgz -d dependencies=web,data-jpa -d type=maven-project -d baseDir=./ | tar -xzvf -
+# Use help command
+./initializr-plusplus help
+# Add jgitver extension
+./initializr-plusplus jgitver
+# 
+```
 
 ## Usage
 

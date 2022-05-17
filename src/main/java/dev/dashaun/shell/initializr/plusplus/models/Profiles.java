@@ -50,6 +50,12 @@ public class Profiles {
 
         //Update starters
         p.getDependencies().add(Dependencies.awsStarter());
+
+        //Build section
+        p.setBuild(new BuildBase());
+        //Add Build Plugins
+        p.getBuild().addPlugin(Plugins.mavenAssemblyPluginNative());
+
         return p;
     }
 

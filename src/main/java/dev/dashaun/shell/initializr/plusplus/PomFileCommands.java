@@ -95,6 +95,25 @@ public class PomFileCommands {
     }
 
     @ShellMethod("Add a 'webflux' profile for Spring Cloud Functions")
+    public String webProfile() {
+        try {
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader(POM_FILE));
+
+            //Update starters
+            Profiles.removeWebProfile(model);
+            model.getProfiles().add(Profiles.webProfile());
+
+            //Write updated model to file
+            MavenXpp3Writer writer = new MavenXpp3Writer();
+            writer.write(new FileWriter(POM_FILE), model);
+        } catch (XmlPullParserException | IOException e) {
+            return "There was a problem updating for webflux functions.";
+        }
+        return "Successfully configured to use webflux functions";
+    }
+
+    @ShellMethod("Add a 'webflux' profile for Spring Cloud Functions")
     public String webfluxProfile() {
         try {
             MavenXpp3Reader reader = new MavenXpp3Reader();

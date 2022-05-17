@@ -13,8 +13,11 @@ public class Dependencies {
     private final static String SPRING_NATIVE = "spring-native";
 
     private final static String SPRING_CLOUD_GROUP_ID = "org.springframework.cloud";
+    private final static String SPRING_BOOT_GROUP_ID = "org.springframework.boot";
 
     private final static String SPRING_CLOUD_FUNCTION_AWS = "spring-cloud-function-adapter-aws";
+    private final static String SPRING_CLOUD_FUNCTION_WEB = "spring-cloud-function-web";
+
     private final static String SPRING_CLOUD_FUNCTION_WEBFLUX = "spring-cloud-starter-function-webflux";
     private final static String SPRING_CLOUD_FUNCTION_CONTEXT = "spring-cloud-function-context";
 
@@ -49,6 +52,27 @@ public class Dependencies {
         u.setArtifactId(AWS_LAMBDA_JAVA_CORE);
         u.setVersion("1.1.0");
         u.setScope("provided");
+        return u;
+    }
+
+    public static Dependency springBootStarterWeb() {
+        Dependency u = new Dependency();
+        u.setGroupId(SPRING_BOOT_GROUP_ID);
+        u.setArtifactId("spring-boot-starter-web");
+        return u;
+    }
+
+    public static Dependency springWeb() {
+        Dependency u = new Dependency();
+        u.setGroupId("org.springframework");
+        u.setArtifactId("spring-web");
+        return u;
+    }
+
+    public static Dependency springCloudFunctionWeb() {
+        Dependency u = new Dependency();
+        u.setGroupId(SPRING_CLOUD_GROUP_ID);
+        u.setArtifactId(SPRING_CLOUD_FUNCTION_WEB);
         return u;
     }
 

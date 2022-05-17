@@ -8,6 +8,7 @@ public class Profiles {
 
     private static final String LAMBDA_PROFILE_ID = "lambda";
     private static final String NATIVE_PROFILE_ID = "native";
+    private static final String WEB_PROFILE_ID = "web";
     private static final String WEBFLUX_PROFILE_ID = "webflux";
     private static final String TINY_BUILDPACK_ID = "tiny-buildpack";
 
@@ -58,6 +59,21 @@ public class Profiles {
         //Add Build Plugins
         p.getBuild().addPlugin(Plugins.mavenAssemblyPluginNative());
 
+        return p;
+    }
+
+    public static void removeWebProfile(Model model) {
+        model.getProfiles().removeIf(p -> p.getId().equalsIgnoreCase(WEBFLUX_PROFILE_ID));
+    }
+
+    public static Profile webProfile() {
+        Profile p = new Profile();
+        p.setId(WEB_PROFILE_ID);
+
+        //Add dependencies
+        p.getDependencies().add(Dependencies.springCloudFunctionWeb());
+        p.getDependencies().add(Dependencies.springWeb());
+        p.getDependencies().add(Dependencies.springBootStarterWeb());
         return p;
     }
 

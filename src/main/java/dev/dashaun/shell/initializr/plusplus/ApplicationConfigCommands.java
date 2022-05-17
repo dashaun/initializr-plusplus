@@ -160,7 +160,7 @@ public class ApplicationConfigCommands {
                                 
                 cd ${LAMBDA_TASK_ROOT:-.}
                                 
-                ./cloud-function-aws -Dlogging.level.org.springframework=DEBUG
+                ./demo -Dlogging.level.org.springframework=DEBUG
                 """;
     }
 

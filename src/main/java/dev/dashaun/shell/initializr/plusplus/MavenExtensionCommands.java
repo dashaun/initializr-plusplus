@@ -4,10 +4,10 @@ import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+
+import static dev.dashaun.shell.initializr.plusplus.Application.writeStringToFile;
 
 @ShellComponent
 @ShellCommandGroup("./.mvn/")
@@ -15,40 +15,28 @@ public class MavenExtensionCommands {
 
     @ShellMethod("add jgitver extension and config")
     public String jgitver() {
-        if (mavenConfigDir() && extensionsConfig() && jgitverConfig()) {
-            return "Successfully added jgitver extension and config in ./.mvn";
+        try{
+            mavenConfigDir();
+            extensionsConfig();
+            jgitverConfig();
+        }catch(IOException ioException){
+            return "There was a problem adding jgitver extension and config";
         }
-        return "There was a problem adding jgitver extension and config";
+        return "Successfully added jgitver extension and config in ./.mvn";
     }
 
-    private boolean writeStringToFile(String data, File file) {
-        try {
-            FileWriter fileWriter = new FileWriter(file, false);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(data);
-            bufferedWriter.flush();
-            bufferedWriter.close();
-            fileWriter.close();
-        } catch (IOException ioe) {
-            return false;
-        }
-        return true;
-    }
-
-    private boolean extensionsConfig() {
+    private void extensionsConfig() throws IOException {
         File file = new File("./.mvn/extensions.xml");
-        if (file.exists()) {
-            return true;
+        if (!file.exists()) {
+            writeStringToFile(extensionsFile(),file);
         }
-        return writeStringToFile(extensionsFile(),file);
     }
 
-    private boolean jgitverConfig() {
+    private void jgitverConfig() throws IOException {
         File file = new File("./.mvn/jgitver.config.xml");
-        if (file.exists()) {
-            return true;
+        if (!file.exists()) {
+            writeStringToFile(jgitverConfigFile(),file);
         }
-        return writeStringToFile(jgitverConfigFile(),file);
     }
 
     private String extensionsFile(){
@@ -83,11 +71,12 @@ public class MavenExtensionCommands {
                 """;
     }
 
-    private boolean mavenConfigDir() {
+    private void mavenConfigDir() throws IOException {
         File file = new File("./mvn");
-        if (file.exists()) {
-            return true;
+        if (!file.exists()) {
+            if(!file.mkdir()){
+                throw new IOException("Couldn't create directory");
+            }
         }
-        return file.mkdir();
     }
 }

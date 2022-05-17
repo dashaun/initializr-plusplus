@@ -18,6 +18,8 @@
   - Update the `project-description`
   - Update the `project-name`
   - Update the `project-version`
+  - Enable all `actuator` management endpoints
+  - Update `spring-cloud-function-context` to a specific starter
 
 ## | [Quick Start](#quick-start) | [Usage](#usage) | [Built With](#built-with) | [Develop](#develop) |
 

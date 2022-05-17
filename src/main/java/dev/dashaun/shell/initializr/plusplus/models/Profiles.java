@@ -50,6 +50,8 @@ public class Profiles {
 
         //Update starters
         p.getDependencies().add(Dependencies.awsStarter());
+        p.getDependencies().add(Dependencies.awsJavaCore());
+        p.getDependencies().add(Dependencies.awsJavaEvents());
 
         //Build section
         p.setBuild(new BuildBase());

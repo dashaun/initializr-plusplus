@@ -34,6 +34,23 @@ public class Dependencies {
         return u;
     }
 
+    public static Dependency awsJavaEvents() {
+        Dependency u = new Dependency();
+        u.setGroupId(COM_DOT_AMAZONAWS);
+        u.setArtifactId(AWS_LAMBDA_JAVA_EVENTS);
+        u.setVersion("${aws-lambda-events.version}");
+        return u;
+    }
+
+    public static Dependency awsJavaCore() {
+        Dependency u = new Dependency();
+        u.setGroupId(COM_DOT_AMAZONAWS);
+        u.setArtifactId(AWS_LAMBDA_JAVA_CORE);
+        u.setVersion("1.1.0");
+        u.setScope("provided");
+        return u;
+    }
+
     public static Dependency webfluxStarter() {
         Dependency u = new Dependency();
         u.setGroupId(SPRING_CLOUD_GROUP_ID);

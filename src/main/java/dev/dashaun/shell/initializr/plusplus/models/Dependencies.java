@@ -38,7 +38,8 @@ public class Dependencies {
         Dependency u = new Dependency();
         u.setGroupId(COM_DOT_AMAZONAWS);
         u.setArtifactId(AWS_LAMBDA_JAVA_EVENTS);
-        u.setVersion("${aws-lambda-events.version}");
+        u.setVersion("3.11.0");
+        u.setScope("provided");
         return u;
     }
 

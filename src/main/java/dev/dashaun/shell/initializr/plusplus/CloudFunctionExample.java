@@ -33,20 +33,20 @@ public class CloudFunctionExample {
                 import org.springframework.boot.autoconfigure.SpringBootApplication;
                 import org.springframework.context.annotation.Bean;
                                 
-                import java.util.Optional;
+                import java.nio.charset.StandardCharsets;
                 import java.util.function.Function;
                                 
                 @SpringBootApplication
                 public class DemoApplication {
                                 
-                	@Bean
-                	public Function<Optional<String>, String> hello() {
-                		return value -> String.format("Hello, %s", value.filter(s -> !s.isBlank()).orElse("World"));
-                	}
+                    @Bean
+                    public Function<byte[], String> hello() {
+                        return value -> value.length>0 ? String.format("Hello, %s", new String(value, StandardCharsets.UTF_8)) : "Hello, World";
+                    }
                                 
-                	public static void main(String[] args) {
-                		SpringApplication.run(DemoApplication.class, args);
-                	}
+                    public static void main(String[] args) {
+                        SpringApplication.run(DemoApplication.class, args);
+                    }
                                 
                 }
                 """;

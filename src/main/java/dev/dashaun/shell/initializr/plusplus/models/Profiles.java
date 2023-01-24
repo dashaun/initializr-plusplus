@@ -12,11 +12,13 @@ public class Profiles {
     private static final String TINY_BUILDPACK_ID = "tiny-buildpack";
 
 
+    @Deprecated
     public static void removeNativeProfile(Model model) {
         //Remove existing profile
         model.getProfiles().removeIf(p -> p.getId().equalsIgnoreCase(NATIVE_PROFILE_ID));
     }
 
+    @Deprecated
     public static Profile nativeProfile() {
         Profile p = new Profile();
         p.setId(NATIVE_PROFILE_ID);
@@ -39,7 +41,7 @@ public class Profiles {
         p.getBuild().getPlugins().add(Plugins.nativeMavenPlugin());
         return p;
     }
-
+    
     public static void removeLambdaProfile(Model model) {
         model.getProfiles().removeIf(p -> p.getId().equalsIgnoreCase(LAMBDA_PROFILE_ID));
     }

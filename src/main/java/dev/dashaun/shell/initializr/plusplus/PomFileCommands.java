@@ -95,6 +95,7 @@ public class PomFileCommands {
     }
 
     @ShellMethod("Add a 'webflux' profile for Spring Cloud Functions")
+    @ShellMethodAvailability("pomFile")
     public String webfluxProfile() {
         try {
             MavenXpp3Reader reader = new MavenXpp3Reader();
@@ -114,25 +115,24 @@ public class PomFileCommands {
     }
 
 
-    @ShellMethod("Add Spring Native to use AOT compiling, native image creation, with GraalVM")
+    @ShellMethod("Support for compiling Spring applications to native executables using the GraalVM native-image compiler.")
     @ShellMethodAvailability("pomFile")
-    public String nativeProfile() {
+    public String nativeMavenPlugin() {
         try {
             MavenXpp3Reader reader = new MavenXpp3Reader();
             Model model = reader.read(new FileReader(POM_FILE));
 
-            //Update starters
-            Profiles.removeNativeProfile(model);
-            model.getProfiles().add(Profiles.nativeProfile());
+            //Update plugins
+            Plugins.addNativeMavenPlugin(model);
 
             //Write updated model to file
             MavenXpp3Writer writer = new MavenXpp3Writer();
             writer.write(new FileWriter(POM_FILE), model);
 
         } catch (XmlPullParserException | IOException e) {
-            return "There was a problem configuring Spring Native.";
+            return "There was a problem adding native-maven-plugin.";
         }
-        return "Successfully configured Spring Native.";
+        return "Successfully added native-maven-plugin.";
     }
 
     @ShellMethod("Create Native OCI Images with paketobuildpacks/builder:tiny")

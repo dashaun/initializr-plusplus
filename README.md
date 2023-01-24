@@ -73,10 +73,13 @@ Built-In Commands
 ### Normal build
 
 - `./mvnw clean package`
+- `java -jar target/plusplus-0.0.2.jar`
+or
+- `./mvnw spring-boot:run`
 
 ### Native build
 
-- `./mvnw clean package -Pnative`
+- `./mvnw -Pnative clean native:compile -DskipTests`
 
 ### Release
 
@@ -96,7 +99,7 @@ Execute following command to find new dependencies
 - [X] update the artifact version in pom.xml
 - [ ] rename Application
 - [ ] Add github actions
-- [ ] add native build profiles
+- [X] add nativeMavenPlugin
 - [X] Update project name
 - [X] Update project description
 - [X] Update the prompt

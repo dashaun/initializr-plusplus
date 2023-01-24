@@ -16,10 +16,18 @@ public class Plugins {
     private final static String SPRING_AOT_MAVEN_PLUGIN = "spring-aot-maven-plugin";
     private final static String SPRING_BOOT_MAVEN_PLUGIN = "spring-boot-maven-plugin";
 
+    private final static String GRAALVM_BUILDTOOLS_GROUP_ID = "org.graalvm.buildtools";
+    private final static String NATIVE_MAVEN_PLUGIN = "native-maven-plugin";
+    @Deprecated
     public static void removeNativePlugins(Model model){
         model.getBuild().getPlugins().removeIf(p -> p.getGroupId().equalsIgnoreCase(SPRING_BOOT_GROUP_ID) && p.getArtifactId().equalsIgnoreCase(SPRING_BOOT_MAVEN_PLUGIN));
         model.getBuild().getPlugins().removeIf(p -> p.getGroupId().equalsIgnoreCase(SPRING_EXPERIMENTAL_GROUP_ID) && p.getArtifactId().equalsIgnoreCase(SPRING_AOT_MAVEN_PLUGIN));
         model.getBuild().getPlugins().removeIf(p -> p.getArtifactId().equalsIgnoreCase(MAVEN_ASSEMBLY_PLUGIN));
+    }
+    
+    public static void addNativeMavenPlugin(Model model){
+        model.getBuild().getPlugins().removeIf(p -> p.getGroupId().equalsIgnoreCase(GRAALVM_BUILDTOOLS_GROUP_ID) && p.getArtifactId().equalsIgnoreCase(NATIVE_MAVEN_PLUGIN));
+        model.getBuild().getPlugins().add(Plugins.nativeMavenPlugin());
     }
 
     public static Plugin springBootMavenPlugin() {
@@ -55,6 +63,7 @@ public class Plugins {
         return p;
     }
 
+    @Deprecated
     public static Plugin springBootAotPlugin() {
         Plugin p = new Plugin();
         p.setGroupId(SPRING_EXPERIMENTAL_GROUP_ID);
@@ -77,10 +86,10 @@ public class Plugins {
         Plugin p = new Plugin();
         p.setGroupId("org.graalvm.buildtools");
         p.setArtifactId("native-maven-plugin");
-        p.setVersion("${native-buildtools.version}");
-        p.setExtensions(true);
-        p.getExecutions().add(testNative());
-        p.getExecutions().add(buildNative());
+//        p.setVersion("${native-buildtools.version}");
+//        p.setExtensions(true);
+//        p.getExecutions().add(testNative());
+//        p.getExecutions().add(buildNative());
         return p;
     }
 
@@ -130,6 +139,7 @@ public class Plugins {
         return testGenerate;
     }
 
+    @Deprecated
     private static PluginExecution buildNative() {
         PluginExecution tn = new PluginExecution();
         tn.setId("build-native");
@@ -138,6 +148,7 @@ public class Plugins {
         return tn;
     }
 
+    @Deprecated
     private static PluginExecution testNative() {
         PluginExecution tn = new PluginExecution();
         tn.setId("test-native");

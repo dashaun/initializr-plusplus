@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.6.7</version>
+    <version>3.0.1</version>
     <relativePath></relativePath>
   </parent>
   <groupId>dev.dashaun.shell.initializr</groupId>
@@ -14,14 +14,13 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <properties>
     <java.version>17</java.version>
-    <repackage.classifier></repackage.classifier>
-    <spring-native.version>0.11.5</spring-native.version>
+    <spring-shell.version>3.0.0-RC1</spring-shell.version>
   </properties>
   <dependencies>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-model</artifactId>
-      <version>3.8.5</version>
+      <version>3.8.7</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -30,7 +29,6 @@
     <dependency>
       <groupId>org.springframework.shell</groupId>
       <artifactId>spring-shell-starter</artifactId>
-      <version>2.1.0-M3</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -38,32 +36,35 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.shell</groupId>
+        <artifactId>spring-shell-dependencies</artifactId>
+        <version>${spring-shell.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
   <repositories>
     <repository>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
       <id>spring-milestones</id>
       <name>Spring Milestones</name>
-      <url>https://repo.spring.io/libs-milestone</url>
-    </repository>
-    <repository>
+      <url>https://repo.spring.io/milestone</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-      <id>spring-releases</id>
-      <name>Spring Releases</name>
-      <url>https://repo.spring.io/release</url>
     </repository>
   </repositories>
   <pluginRepositories>
     <pluginRepository>
+      <id>spring-milestones</id>
+      <name>Spring Milestones</name>
+      <url>https://repo.spring.io/milestone</url>
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-      <id>spring-releases</id>
-      <name>Spring Releases</name>
-      <url>https://repo.spring.io/release</url>
     </pluginRepository>
   </pluginRepositories>
   <build>
@@ -74,81 +75,4 @@
       </plugin>
     </plugins>
   </build>
-  <profiles>
-    <profile>
-      <id>native</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.springframework.experimental</groupId>
-            <artifactId>spring-aot-maven-plugin</artifactId>
-            <version>${spring-native.version}</version>
-            <executions>
-              <execution>
-                <id>generate</id>
-                <goals>
-                  <goal>generate</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.graalvm.buildtools</groupId>
-            <artifactId>native-maven-plugin</artifactId>
-            <version>${native-buildtools.version}</version>
-            <extensions>true</extensions>
-            <executions>
-              <execution>
-                <id>test-native</id>
-                <phase>test</phase>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>build-native</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-              </execution>
-            </executions>
-            <configuration>
-              <imageName>initializr-plusplus-linux-amd64</imageName>
-            </configuration>
-          </plugin>
-          <plugin>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-maven-plugin</artifactId>
-            <configuration>
-              <classifier>exec</classifier>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-      <properties>
-        <native-buildtools.version>0.9.11</native-buildtools.version>
-        <repackage.classifier>exec</repackage.classifier>
-      </properties>
-      <dependencies>
-        <dependency>
-          <groupId>org.springframework.experimental</groupId>
-          <artifactId>spring-native</artifactId>
-          <version>${spring-native.version}</version>
-        </dependency>
-        <dependency>
-          <groupId>org.junit.platform</groupId>
-          <artifactId>junit-platform-launcher</artifactId>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <pluginRepositories>
-        <pluginRepository>
-          <id>spring-releases</id>
-          <name>Spring Releases</name>
-          <url>https://repo.spring.io/release</url>
-        </pluginRepository>
-      </pluginRepositories>
-    </profile>
-  </profiles>
 </project>

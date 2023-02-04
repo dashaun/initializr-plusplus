@@ -5,15 +5,15 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.1</version>
-    <relativePath></relativePath>
+    <version>3.0.2</version>
+    <relativePath/>
   </parent>
   <groupId>dev.dashaun.shell.initializr</groupId>
   <artifactId>plusplus</artifactId>
   <version>0</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <properties>
-    <spring-shell.version>3.0.0-RC1</spring-shell.version>
+    <spring-shell.version>3.0.0</spring-shell.version>
     <java.version>17</java.version>
   </properties>
   <dependencyManagement>
@@ -47,16 +47,6 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  <repositories>
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>spring-milestones</id>
-      <name>Spring Milestones</name>
-      <url>https://repo.spring.io/milestone</url>
-    </repository>
-  </repositories>
   <build>
     <plugins>
       <plugin>

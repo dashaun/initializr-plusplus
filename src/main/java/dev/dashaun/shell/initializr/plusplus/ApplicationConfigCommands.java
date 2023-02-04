@@ -1,6 +1,5 @@
 package dev.dashaun.shell.initializr.plusplus;
 
-import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
@@ -10,7 +9,7 @@ import java.io.IOException;
 import static dev.dashaun.shell.initializr.plusplus.Application.writeStringToFile;
 
 @ShellComponent
-@ShellCommandGroup("./src/main/resources/application.yaml")
+//@ShellCommandGroup("./src/main/resources/application.yaml")
 public class ApplicationConfigCommands {
 
     private final static File APPLICATION_YAML = new File("./src/main/resources/application.yaml");

@@ -14,7 +14,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 @ShellComponent
-@ShellCommandGroup("./pom.xml")
 public class PomFileCommands {
 
     private final static File POM_FILE = new File("./pom.xml");
@@ -115,7 +114,7 @@ public class PomFileCommands {
     }
 
 
-    @ShellMethod("Support for compiling Spring applications to native executables using the GraalVM native-image compiler.")
+    @ShellMethod("Support for GraalVM native-image compiler.")
     @ShellMethodAvailability("pomFile")
     public String nativeMavenPlugin() {
         try {

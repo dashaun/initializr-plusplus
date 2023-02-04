@@ -1,6 +1,5 @@
 package dev.dashaun.shell.initializr.plusplus;
 
-import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
@@ -10,7 +9,7 @@ import java.io.IOException;
 import static dev.dashaun.shell.initializr.plusplus.Application.writeStringToFile;
 
 @ShellComponent
-@ShellCommandGroup("spring-cloud-functions")
+//@ShellCommandGroup("spring-cloud-functions")
 public class CloudFunctionExample {
 
     private final static File DEMO_APPLICATION_SRC = new File("./src/main/java/com/example/demo/DemoApplication.java");

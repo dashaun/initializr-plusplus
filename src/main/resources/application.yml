@@ -5,3 +5,4 @@ logging:
 spring:
   main:
     banner-mode: 'off'
+    web-application-type: 'NONE'

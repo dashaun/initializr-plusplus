@@ -9,7 +9,7 @@ on:
 jobs:
   tagged-release:
     name: "Tagged Release"
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
       - uses: graalvm/setup-graalvm@v1

@@ -26,6 +26,9 @@ jobs:
       - name: Build Image
         run: ./mvnw -Pnative native:compile -DskipTests
 
+      - name: Rename Image
+        run: mv ./target/plusplus ./target/initializer-plusplus-linux-amd64
+        
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GH_TOKEN }}"

@@ -12,8 +12,8 @@ import static dev.dashaun.shell.initializr.plusplus.Application.writeStringToFil
 //@ShellCommandGroup("./.mvn/")
 public class MavenExtensionCommands {
 
-    @ShellMethod("add jgitver extension and config")
-    public String jgitver() {
+    @ShellMethod("add mvn extensions and config")
+    public String extensions() {
         try{
             mavenConfigDir();
             extensionsConfig();
@@ -47,6 +47,11 @@ public class MavenExtensionCommands {
                         <artifactId>jgitver-maven-plugin</artifactId>
                         <version>1.9.0</version>
                     </extension>
+                    <extension>
+                        <groupId>kr.motd.maven</groupId>
+                        <artifactId>os-maven-plugin</artifactId>
+                        <version>1.7.0</version>
+                    </extension>
                 </extensions>
                 """;
     }
@@ -57,15 +62,15 @@ public class MavenExtensionCommands {
                                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                xsi:schemaLocation="http://jgitver.github.io/maven/configuration/1.1.0 https://jgitver.github.io/maven/configuration/jgitver-configuration-v1_1_0.xsd">
                     <strategy>CONFIGURABLE</strategy>
-                    <policy>NEAREST</policy>
+                    <policy>LATEST</policy>
                     <autoIncrementPatch>true</autoIncrementPatch>
                     <useCommitDistance>false</useCommitDistance>
-                    <useDirty>false</useDirty>
+                    <useDirty>true</useDirty>
                     <useGitCommitId>false</useGitCommitId>
-                    <useSnapshot>false</useSnapshot> <!-- use -SNAPSHOT in CONFIGURABLE strategy -->
-                    <gitCommitIdLength>8</gitCommitIdLength>  <!-- between [8,40] -->
-                    <nonQualifierBranches>main</nonQualifierBranches> <!-- comma separated, example "master,integration" -->
-                    <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>   <!-- uses jgitver#BranchingPolicy#DEFAULT_FALLBACK as fallback branch policy-->
+                    <useSnapshot>false</useSnapshot>
+                    <gitCommitIdLength>8</gitCommitIdLength>
+                    <nonQualifierBranches>main</nonQualifierBranches>
+                    <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>
                 </configuration>
                 """;
     }

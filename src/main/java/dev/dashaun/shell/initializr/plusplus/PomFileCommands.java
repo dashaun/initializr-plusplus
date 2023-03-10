@@ -112,6 +112,21 @@ public class PomFileCommands {
         }
         return "Successfully configured to use webflux functions";
     }
+    
+//            <plugin>
+//                <groupId>io.spring.javaformat</groupId>
+//                <artifactId>spring-javaformat-maven-plugin</artifactId>
+//                <version>0.0.35</version>
+//                <executions>
+//                    <execution>
+//                        <phase>validate</phase>
+//                        <inherited>true</inherited>
+//                        <goals>
+//                            <goal>validate</goal>
+//                        </goals>
+//                    </execution>
+//                </executions>
+//            </plugin>
 
 
     @ShellMethod("Support for GraalVM native-image compiler.")

@@ -3,7 +3,7 @@ package dev.dashaun.shell.initializr.plusplus;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
-@SpringBootTest(properties = { "spring.shell.interactive.enabled=false" })
+@SpringBootTest(properties = {"spring.shell.interactive.enabled=false"})
 public class ApplicationTests {
 //
 //	@Autowired

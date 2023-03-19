@@ -12,20 +12,20 @@ import static dev.dashaun.shell.initializr.plusplus.Application.writeStringToFil
 //@ShellCommandGroup("spring-cloud-functions")
 public class CloudFunctionExample {
 
-    private final static File DEMO_APPLICATION_SRC = new File("./src/main/java/com/example/demo/DemoApplication.java");
+  private final static File DEMO_APPLICATION_SRC = new File("./src/main/java/com/example/demo/DemoApplication.java");
 
-    @ShellMethod("Update DemoApplication with 'Hello World' @Bean Function")
-    public String helloWorldFunctionBean() {
-        try {
-            writeStringToFile(DemoApplicationWithFunctionBean(),DEMO_APPLICATION_SRC );
-        } catch (IOException ioException) {
-            return "There was a problem adding the function";
-        }
-        return "Successfully added the function";
+  @ShellMethod("Update DemoApplication with 'Hello World' @Bean Function")
+  public String helloWorldFunctionBean() {
+    try {
+      writeStringToFile(DemoApplicationWithFunctionBean(), DEMO_APPLICATION_SRC);
+    } catch (IOException ioException) {
+      return "There was a problem adding the function";
     }
+    return "Successfully added the function";
+  }
 
-    private String DemoApplicationWithFooFunction() {
-        return """
+  private String DemoApplicationWithFooFunction() {
+    return """
                 package com.example.demo;
                                 
                 import org.springframework.boot.SpringBootConfiguration;
@@ -74,10 +74,10 @@ public class CloudFunctionExample {
                     }
                 }
                 """;
-    }
+  }
 
-    private String DemoApplicationWithFunctionalBeanDef() {
-        return """
+  private String DemoApplicationWithFunctionalBeanDef() {
+    return """
                 package com.example.demo;
                                 
                 import org.springframework.boot.SpringBootConfiguration;
@@ -109,10 +109,10 @@ public class CloudFunctionExample {
                                 
                 }
                 """;
-    }
+  }
 
-    private String DemoApplicationWithFunctionBean() {
-        return """
+  private String DemoApplicationWithFunctionBean() {
+    return """
                 package com.example.demo;
                                 
                 import org.springframework.boot.SpringApplication;
@@ -136,5 +136,5 @@ public class CloudFunctionExample {
                                 
                 }
                 """;
-    }
+  }
 }

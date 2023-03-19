@@ -5,8 +5,8 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.2</version>
-    <relativePath/>
+    <version>3.0.4</version>
+    <relativePath></relativePath>
   </parent>
   <groupId>dev.dashaun.shell.initializr</groupId>
   <artifactId>plusplus</artifactId>
@@ -56,6 +56,31 @@
       <plugin>
         <groupId>org.graalvm.buildtools</groupId>
         <artifactId>native-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.openrewrite.maven</groupId>
+        <artifactId>rewrite-maven-plugin</artifactId>
+        <version>4.40.0</version>
+        <configuration>
+          <activeRecipes>
+            <recipe>org.openrewrite.java.format.AutoFormat</recipe>
+          </activeRecipes>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.spring.javaformat</groupId>
+        <artifactId>spring-javaformat-maven-plugin</artifactId>
+        <version>0.0.35</version>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>validate</goal>
+            </goals>
+            <inherited>true</inherited>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

@@ -5,15 +5,15 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.2</version>
-    <relativePath/>
+    <version>3.0.6</version>
+    <relativePath></relativePath>
   </parent>
   <groupId>dev.dashaun.shell.initializr</groupId>
   <artifactId>plusplus</artifactId>
   <version>0</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <properties>
-    <spring-shell.version>3.0.0</spring-shell.version>
+    <spring-shell.version>3.0.3</spring-shell.version>
     <java.version>17</java.version>
   </properties>
   <dependencyManagement>
@@ -50,12 +50,17 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-      </plugin>
-      <plugin>
         <groupId>org.graalvm.buildtools</groupId>
         <artifactId>native-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <image>
+            <builder>dashaun/builder:tiny</builder>
+          </image>
+        </configuration>
       </plugin>
     </plugins>
   </build>

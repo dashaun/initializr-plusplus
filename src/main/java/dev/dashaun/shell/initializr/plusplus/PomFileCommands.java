@@ -8,10 +8,7 @@ import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 
 @ShellComponent
 public class PomFileCommands {
@@ -148,6 +145,26 @@ public class PomFileCommands {
         }
         return "Successfully added native-maven-plugin.";
     }
+    
+    @ShellMethod("Add multi-architecture builder support.")
+    @ShellMethodAvailability("springBootMavenPluginExists")
+    public String multiArchBuilder() {
+        try {
+            MavenXpp3Reader reader = new MavenXpp3Reader();
+            Model model = reader.read(new FileReader(POM_FILE));
+
+            //Update plugins
+            Plugins.addMultiArchBuilder(model);
+
+            //Write updated model to file
+            MavenXpp3Writer writer = new MavenXpp3Writer();
+            writer.write(new FileWriter(POM_FILE), model);
+
+        } catch (XmlPullParserException | IOException e) {
+            return "There was a problem adding multi-architecture builder support.";
+        }
+        return "Successfully added multi-architecture builder support.";
+    }
 
     @ShellMethod("Create Native OCI Images with paketobuildpacks/builder:tiny")
     @ShellMethodAvailability("pomFile")
@@ -174,6 +191,14 @@ public class PomFileCommands {
         return POM_FILE.exists()
                 ? Availability.available()
                 : Availability.unavailable(String.format("%s does not exist", POM_FILE.getName()));
+    }
+    
+    public Availability springBootMavenPluginExists() throws FileNotFoundException, IOException, XmlPullParserException {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        Model model = reader.read(new FileReader(POM_FILE));
+        return Plugins.hasSpringBootMavenPlugin(model)
+                ? Availability.available()
+                : Availability.unavailable("Spring Boot Maven Plugin not found");
     }
 
 }

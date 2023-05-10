@@ -25,9 +25,18 @@ public class Plugins {
         model.getBuild().getPlugins().removeIf(p -> p.getArtifactId().equalsIgnoreCase(MAVEN_ASSEMBLY_PLUGIN));
     }
     
+    public static boolean hasSpringBootMavenPlugin(Model model){
+        return model.getBuild().getPlugins().stream().anyMatch(p -> p.getGroupId().equalsIgnoreCase(SPRING_BOOT_GROUP_ID) && p.getArtifactId().equalsIgnoreCase(SPRING_BOOT_MAVEN_PLUGIN));
+    } 
+    
     public static void addNativeMavenPlugin(Model model){
         model.getBuild().getPlugins().removeIf(p -> p.getGroupId().equalsIgnoreCase(GRAALVM_BUILDTOOLS_GROUP_ID) && p.getArtifactId().equalsIgnoreCase(NATIVE_MAVEN_PLUGIN));
         model.getBuild().getPlugins().add(Plugins.nativeMavenPlugin());
+    }
+    
+    public static void addMultiArchBuilder(Model model){
+        model.getBuild().getPlugins().removeIf(p -> p.getGroupId().equalsIgnoreCase(SPRING_BOOT_GROUP_ID) && p.getArtifactId().equalsIgnoreCase(SPRING_BOOT_MAVEN_PLUGIN));
+        model.getBuild().getPlugins().add(Plugins.multiArchBuilder());        
     }
 
     public static Plugin springBootMavenPlugin() {
@@ -79,6 +88,22 @@ public class Plugins {
         configuration.addChild(removeYamlSupport);
         p.setConfiguration(configuration);
 
+        return p;
+    }
+    
+    public static Plugin multiArchBuilder() {
+        Plugin p = new Plugin();
+        p.setGroupId(SPRING_BOOT_GROUP_ID);
+        p.setArtifactId(SPRING_BOOT_MAVEN_PLUGIN);
+
+        Xpp3Dom configuration = new Xpp3Dom("configuration");
+        Xpp3Dom image = new Xpp3Dom("image");
+        Xpp3Dom builder = new Xpp3Dom("builder");
+        builder.setValue("dashaun/builder:tiny");
+        image.addChild(builder);
+        configuration.addChild(image);
+
+        p.setConfiguration(configuration);
         return p;
     }
 

@@ -108,6 +108,12 @@ Execute following command to find new dependencies
 
 See the [open issues](https://github.com/dashaun/spring-initializer-next-step/issues) for a list of proposed features (and known issues).
 
+### Notes
+
+I want to connect different released packages back into the repository.
+Right now I am using the `gh` cli to do this manually.
+Issue #9 is to automate this process, for Windows, Linux+ARM64, Darwin+ARM64 and Darwin+AMD64.
+
 ### Contributing
 
 Pull-requests are welcomed!

@@ -48,6 +48,9 @@
       <plugin>
         <groupId>org.graalvm.buildtools</groupId>
         <artifactId>native-maven-plugin</artifactId>
+        <configuration>
+          <imageName>initializr-plusplus-${os.detected.classifier}</imageName>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.springframework.boot</groupId>

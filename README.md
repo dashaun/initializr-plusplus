@@ -86,6 +86,8 @@ or
 - `git tag v#.#.#`
 - `git push origin v#.#.#`
 
+> gh release upload v#.#.# target/initializr-plusplus-$OS-$ARCH
+
 ### Maintaining up-to-date dependencies
 
 Execute following command to find new dependencies

@@ -25,9 +25,6 @@ jobs:
 
       - name: Build Image
         run: ./mvnw -Pnative native:compile -DskipTests
-
-      - name: Rename Image
-        run: mv ./target/plusplus ./target/initializr-plusplus-linux-amd64
         
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -35,4 +32,4 @@ jobs:
           prerelease: false
           files: |
             LICENSE
-            ./target/initializr-plusplus-linux-amd64
+            ./target/initializr-plusplus-linux-x86_64

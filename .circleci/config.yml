@@ -18,12 +18,7 @@ jobs:
       - run:
           name: "native compile"
           command: "./mvnw -Pnative clean native:compile"
-      - gh/release:
-          tag: $CIRCLE_TAG
-          name: $CIRCLE_TAG
-          body: $CIRCLE_TAG
-          prerelease: false
-          draft: false
+      - gh/upload:
           files: |
               ./target/initializr-plusplus-linux-aarch_64
 

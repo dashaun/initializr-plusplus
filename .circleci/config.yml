@@ -23,9 +23,9 @@ workflows:
   arm64-native-workflow:
     jobs:
       - arm64-native:
+      - gh/upload:
           context:
             - dashaun-github
-      - gh/upload:
           files: ./target/initializr-plusplus-linux-aarch_64
           requires:
             - arm64-native

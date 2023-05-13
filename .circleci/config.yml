@@ -18,21 +18,14 @@ jobs:
       - run:
           name: "native compile"
           command: "./mvnw -Pnative clean native:compile"
-      - store_artifacts:
-          path: ./target/initializr-plusplus-linux-aarch_64
-          
-workflows:
-  arm64-native-workflow:
-    jobs:
-      - arm64-native
       - gh/upload:
           context:
             - dashaun-github
           files: ./target/initializr-plusplus-linux-aarch_64
           requires:
             - arm64-native
-#          filters:
-#            tags:
-#              only: /^v.*/
-#            branches:
-#              ignore: /.*/
+
+workflows:
+  arm64-native-workflow:
+    jobs:
+      - arm64-native

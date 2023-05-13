@@ -22,8 +22,6 @@ jobs:
           context:
             - dashaun-github
           files: ./target/initializr-plusplus-linux-aarch_64
-          requires:
-            - arm64-native
 
 workflows:
   arm64-native-workflow:

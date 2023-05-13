@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  docker: circleci/docker@2.2.0
+  gh: circleci/github-cli@1.0
   sdkman: joshdholtz/sdkman@0.2.0
 
 jobs:
@@ -14,23 +14,25 @@ jobs:
       - sdkman/setup-sdkman
       - sdkman/sdkman-install:
           candidate: java
-          version: 22.3.r17-grl
+          version: 22.3.1.r17-grl
       - run:
-          name: "bootBuildImage"
-          command: "./gradlew bootBuildImage"
-      - docker/check:
-          docker-username: DOCKER_LOGIN
-          docker-password: DOCKERHUB_PASSWORD    
-      - docker/push:
-          image: dashaun/dev.dashaun.service.gateway
-          tag: $CIRCLE_TAG-aarch_64
+          name: "native compile"
+          command: "./mvnw -Pnative clean native:compile"
+      - gh/release:
+          tag: $CIRCLE_TAG
+          name: $CIRCLE_TAG
+          body: $CIRCLE_TAG
+          prerelease: false
+          draft: false
+          files: |
+              ./target/initializr-plusplus-linux-aarch_64
 
 workflows:
   arm64-native-workflow:
     jobs:
       - arm64-native:
           context:
-            - dashaun-dockerhub
+            - github-dashaun
           filters:
             tags:
               only: /^v.*/

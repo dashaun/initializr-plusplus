@@ -20,8 +20,7 @@ jobs:
           command: "./mvnw -Pnative clean native:compile"
       - gh/setup    
       - gh/upload:
-          files: |
-              ./target/initializr-plusplus-linux-aarch_64
+          files: ./target/initializr-plusplus-linux-aarch_64
 
 workflows:
   arm64-native-workflow:

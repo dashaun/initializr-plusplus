@@ -18,9 +18,6 @@ jobs:
       - run:
           name: "native compile"
           command: "./mvnw -Pnative clean native:compile"
-      - gh/setup    
-      - gh/upload:
-          files: ./target/initializr-plusplus-linux-aarch_64
 
 workflows:
   arm64-native-workflow:
@@ -28,6 +25,9 @@ workflows:
       - arm64-native:
           context:
             - dashaun-github
+      - gh/setup
+      - gh/upload:
+          files: ./target/initializr-plusplus-linux-aarch_64
 #          filters:
 #            tags:
 #              only: /^v.*/

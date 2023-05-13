@@ -25,7 +25,6 @@ workflows:
       - arm64-native:
           context:
             - dashaun-github
-      - gh/setup
       - gh/upload:
           files: ./target/initializr-plusplus-linux-aarch_64
 #          filters:

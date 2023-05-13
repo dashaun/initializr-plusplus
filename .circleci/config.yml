@@ -22,7 +22,7 @@ jobs:
 workflows:
   arm64-native-workflow:
     jobs:
-      - arm64-native:
+      - arm64-native
       - gh/upload:
           context:
             - dashaun-github

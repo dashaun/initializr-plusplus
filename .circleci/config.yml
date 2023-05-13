@@ -27,6 +27,8 @@ workflows:
             - dashaun-github
       - gh/upload:
           files: ./target/initializr-plusplus-linux-aarch_64
+          requires:
+            - arm64-native
 #          filters:
 #            tags:
 #              only: /^v.*/

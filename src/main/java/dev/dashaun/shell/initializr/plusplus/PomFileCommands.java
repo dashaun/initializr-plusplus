@@ -32,11 +32,11 @@ public class PomFileCommands {
 
     @ShellMethod("Update the project description")
     @ShellMethodAvailability("pomFile")
-    public String projectDescription(@ShellOption(defaultValue = "") String description, boolean delete) {
+    public String projectDescription(@ShellOption(defaultValue = "") String description) {
         try {
             MavenXpp3Reader reader = new MavenXpp3Reader();
             Model model = reader.read(new FileReader(POM_FILE));
-            if (delete) {
+            if ("".equals(description)) {
                 model.setDescription(null);
             } else {
                 model.setDescription(description);
@@ -46,7 +46,7 @@ public class PomFileCommands {
         } catch (XmlPullParserException | IOException e) {
             return "There was a problem updating the project description.";
         }
-        return delete
+        return "".equals(description)
                 ? "Successfully removed the project description."
                 : String.format("Successfully set project name to '%s'", description);
     }

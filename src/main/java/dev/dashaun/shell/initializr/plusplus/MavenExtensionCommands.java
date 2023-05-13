@@ -76,7 +76,7 @@ public class MavenExtensionCommands {
     }
 
     private void mavenConfigDir() throws IOException {
-        File file = new File("./mvn");
+        File file = new File("./.mvn");
         if (!file.exists()) {
             if(!file.mkdir()){
                 throw new IOException("Couldn't create directory");

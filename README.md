@@ -116,6 +116,9 @@ I want to connect different released packages back into the repository.
 Right now I am using the `gh` cli to do this manually.
 Issue #9 is to automate this process, for Windows, Linux+ARM64, Darwin+ARM64 and Darwin+AMD64.
 
+Before running `native:compile` on Windows
+> C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat
+> 
 ### Contributing
 
 Pull-requests are welcomed!

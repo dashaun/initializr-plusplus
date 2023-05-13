@@ -14,7 +14,7 @@
 - This tool decreases the amount of time between `T-Initialize` and `T-Production`
   - This improves the `Fifth Metric` Mean Time To Dopamine (MTTD)
 - This tool provides commands via CLI and interactive shell
-  - Add the `jtigver` Maven Extension
+  - Add the `jtigver-maven-plugn` and `os-maven-plugin` as Maven Extensions
   - Update the `project-description`
   - Update the `project-name`
   - Update the `project-version`
@@ -29,13 +29,13 @@ Download the latest release and put it on your path.
 
 ```bash
 # Download 
-curl -L https://github.com/dashaun/spring-initializer-next-step/releases/download/v0.0.1/initializr-plusplus-linux-amd64 --output initializr-plusplus
+curl -L https://github.com/dashaun/initializr-plusplus/releases/download/v#.#.#/initializr-plusplus-linux-amd64 --output initializr-plusplus
 # Download and extract an example project from start.sprint.io
 curl https://start.spring.io/starter.tgz -d dependencies=web,data-jpa -d type=maven-project -d baseDir=./ | tar -xzvf -
 # Use help command
 ./initializr-plusplus help
-# Add jgitver extension
-./initializr-plusplus jgitver
+# Add extensions
+./initializr-plusplus extensions
 # Interactive mode
 ./initializr-plusplus
 ```
@@ -45,23 +45,30 @@ curl https://start.spring.io/starter.tgz -d dependencies=web,data-jpa -d type=ma
 ```text
 AVAILABLE COMMANDS
 
-./.mvn/
-        jgitver: add jgitver extension and config
-
-./pom.xml
-        project-description: Update the project description
-        project-name: Update the project name
-        project-version: Update the project version
+Application Config Commands
+       expose-mgmt: expose all management endpoints via web
 
 Built-In Commands
-        clear: Clear the shell screen.
-        exit, quit: Exit the shell.
-        help: Display help about available commands.
-        history: Display or save the history of previously run commands
-        script: Read and execute commands from a file.
-        stacktrace: Display the full stacktrace of the last error.
-        version: Show version info
-        
+       help: Display help about available commands
+       history: Display or save the history of previously run commands
+       version: Show version info
+       script: Read and execute commands from a file.
+
+Cloud Function Example
+       hello-world-function-bean: Update DemoApplication with 'Hello World' @Bean Function
+
+Maven Extension Commands
+       extensions: add mvn extensions and config
+
+Pom File Commands
+       native-maven-plugin: Support for GraalVM native-image compiler.
+       multi-arch-builder: Add multi-architecture builder support.
+       project-name: Update the project name
+       tiny-buildpack-profile: Create Native OCI Images with paketobuildpacks/builder:tiny
+       project-version: Update the project version
+       lambda-profile: Add AWS Lambda profile for Spring Cloud Functions
+       webflux-profile: Add a 'webflux' profile for Spring Cloud Functions
+       project-description: Update the project description
 ```
 
 ## Built with:
@@ -96,19 +103,7 @@ Execute following command to find new dependencies
 
 ### Roadmap
 
-- [X] jgitver extension
-- [X] jgitver config
-- [X] update the artifact version in pom.xml
-- [ ] rename Application
-- [ ] Add github actions
-- [X] add nativeMavenPlugin
-- [X] Update project name
-- [X] Update project description
-- [X] Update the prompt
-- [ ] gitcommit id plugin
-- [ ] registry placeholders in <properties>
-
-See the [open issues](https://github.com/dashaun/spring-initializer-next-step/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/dashaun/initializr-plusplus/issues) for a list of proposed features (and known issues).
 
 ### Notes
 

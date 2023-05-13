@@ -29,9 +29,8 @@ workflows:
       - arm64-native:
           context:
             - dashaun-github
-
-#          filters:
-#            tags:
-#              only: /^v.*/
-#            branches:
-#              ignore: /.*/
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/

@@ -18,7 +18,9 @@ jobs:
       - run:
           name: "native compile"
           command: "./mvnw -Pnative clean native:compile"
-
+      - store_artifacts:
+          path: ./target/initializr-plusplus-linux-aarch_64
+          
 workflows:
   arm64-native-workflow:
     jobs:

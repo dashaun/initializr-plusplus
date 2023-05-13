@@ -18,6 +18,7 @@ jobs:
       - run:
           name: "native compile"
           command: "./mvnw -Pnative clean native:compile"
+      - gh/setup    
       - gh/upload:
           files: |
               ./target/initializr-plusplus-linux-aarch_64

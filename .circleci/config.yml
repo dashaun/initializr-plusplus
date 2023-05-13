@@ -18,12 +18,20 @@ jobs:
       - run:
           name: "native compile"
           command: "./mvnw -Pnative clean native:compile"
-      - gh/upload:
-          context:
-            - dashaun-github
-          files: ./target/initializr-plusplus-linux-aarch_64
-
+      - gh/setup
+      - run:
+          name: "upload release asset"
+          command: "gh release upload $CIRCLE_TAG ./target/initializr-plusplus-linux-aarch_64"
+          
 workflows:
   arm64-native-workflow:
     jobs:
-      - arm64-native
+      - arm64-native:
+          context:
+            - dashaun-github
+
+#          filters:
+#            tags:
+#              only: /^v.*/
+#            branches:
+#              ignore: /.*/

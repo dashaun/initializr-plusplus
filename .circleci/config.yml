@@ -21,7 +21,7 @@ jobs:
       - gh/setup
       - run:
           name: "upload release asset"
-          command: "gh release upload $CIRCLE_TAG ./target/initializr-plusplus-linux-aarch_64"
+          command: "gh release upload ${CIRCLE_TAG} ./target/initializr-plusplus-linux-aarch_64"
           
 workflows:
   arm64-native-workflow:

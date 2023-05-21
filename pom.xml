@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.0.5</version>
+    <version>3.0.7</version>
     <relativePath></relativePath>
   </parent>
   <groupId>dev.dashaun.shell.initializr</groupId>
@@ -60,6 +60,21 @@
             <builder>dashaun/builder:tiny</builder>
           </image>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>io.spring.javaformat</groupId>
+        <artifactId>spring-javaformat-maven-plugin</artifactId>
+        <version>0.0.39</version>
+        <executions>
+          <execution>
+            <id>validate</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>validate</goal>
+            </goals>
+            <inherited>true</inherited>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

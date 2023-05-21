@@ -13,192 +13,176 @@ import java.io.*;
 @ShellComponent
 public class PomFileCommands {
 
-    private final static File POM_FILE = new File("./pom.xml");
+	private final MavenXpp3Reader reader;
 
-    @ShellMethod("Update the project version")
-    @ShellMethodAvailability("pomFile")
-    public String projectVersion(@ShellOption(defaultValue = "0") String version) {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
-            model.setVersion(version);
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem updating the project version.";
-        }
-        return String.format("Successfully set project version to '%s'", version);
-    }
+	public PomFileCommands() {
+		this.reader = new MavenXpp3Reader();
+	}
 
-    @ShellMethod("Update the project description")
-    @ShellMethodAvailability("pomFile")
-    public String projectDescription(@ShellOption(defaultValue = "") String description) {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
-            if ("".equals(description)) {
-                model.setDescription(null);
-            } else {
-                model.setDescription(description);
-            }
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem updating the project description.";
-        }
-        return "".equals(description)
-                ? "Successfully removed the project description."
-                : String.format("Successfully set project name to '%s'", description);
-    }
+	private final static File POM_FILE = new File("./pom.xml");
 
-    @ShellMethod("Update the project name")
-    @ShellMethodAvailability("pomFile")
-    public String projectName(@ShellOption(defaultValue = "${project.groupId}:${project.artifactId}") String name) {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
-            model.setName(name);
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem updating the project name.";
-        }
-        return String.format("Successfully set project name to '%s'", name);
-    }
+	@ShellMethod("Update the project version")
+	public String projectVersion(@ShellOption(defaultValue = "0") String version) {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
+			model.setVersion(version);
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem updating the project version.";
+		}
+		return String.format("Successfully set project version to '%s'", version);
+	}
 
-    @ShellMethod("Add AWS Lambda profile for Spring Cloud Functions")
-    @ShellMethodAvailability("pomFile")
-    public String lambdaProfile() {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
+	@ShellMethod("Update the project description")
+	public String projectDescription(@ShellOption(defaultValue = "") String description) {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
+			if ("".equals(description)) {
+				model.setDescription(null);
+			}
+			else {
+				model.setDescription(description);
+			}
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem updating the project description.";
+		}
+		return "".equals(description) ? "Successfully removed the project description."
+				: String.format("Successfully set project name to '%s'", description);
+	}
 
-            Profiles.removeLambdaProfile(model);
-            model.getProfiles().add(Profiles.lambdaProfile());
+	@ShellMethod("Update the project name")
+	public String projectName(@ShellOption(defaultValue = "${project.groupId}:${project.artifactId}") String name) {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
+			model.setName(name);
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem updating the project name.";
+		}
+		return String.format("Successfully set project name to '%s'", name);
+	}
 
-            //Write updated model to file
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
+	@ShellMethod("Add AWS Lambda profile for Spring Cloud Functions")
+	public String lambdaProfile() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
 
-            //Create assembly configs
-            ApplicationConfigCommands.writeJavaAssembly();
-            ApplicationConfigCommands.writeNativeAssembly();
+			Profiles.removeLambdaProfile(model);
+			model.getProfiles().add(Profiles.lambdaProfile());
 
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem configuring Lambda use.";
-        }
-        return "Successfully configure for Lambda use.";
-    }
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
 
-    @ShellMethod("Add a 'webflux' profile for Spring Cloud Functions")
-    @ShellMethodAvailability("pomFile")
-    public String webfluxProfile() {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
+			// Create assembly configs
+			ApplicationConfigCommands.writeJavaAssembly();
+			ApplicationConfigCommands.writeNativeAssembly();
 
-            //Update starters
-            Profiles.removeWebfluxProfile(model);
-            model.getProfiles().add(Profiles.webfluxProfile());
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem configuring Lambda use.";
+		}
+		return "Successfully configure for Lambda use.";
+	}
 
-            //Write updated model to file
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem updating for webflux functions.";
-        }
-        return "Successfully configured to use webflux functions";
-    }
-    
-//            <plugin>
-//                <groupId>io.spring.javaformat</groupId>
-//                <artifactId>spring-javaformat-maven-plugin</artifactId>
-//                <version>0.0.35</version>
-//                <executions>
-//                    <execution>
-//                        <phase>validate</phase>
-//                        <inherited>true</inherited>
-//                        <goals>
-//                            <goal>validate</goal>
-//                        </goals>
-//                    </execution>
-//                </executions>
-//            </plugin>
+	@ShellMethod("Add a 'webflux' profile for Spring Cloud Functions")
+	public String webfluxProfile() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
 
+			// Update starters
+			Profiles.removeWebfluxProfile(model);
+			model.getProfiles().add(Profiles.webfluxProfile());
 
-    @ShellMethod("Support for GraalVM native-image compiler.")
-    @ShellMethodAvailability("pomFile")
-    public String nativeMavenPlugin() {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem updating for webflux functions.";
+		}
+		return "Successfully configured to use webflux functions";
+	}
 
-            //Update plugins
-            Plugins.addNativeMavenPlugin(model);
+	@ShellMethod("Support for GraalVM native-image compiler.")
+	public String nativeMavenPlugin() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
 
-            //Write updated model to file
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
+			// Update plugins
+			Plugins.addNativeMavenPlugin(model);
 
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem adding native-maven-plugin.";
-        }
-        return "Successfully added native-maven-plugin.";
-    }
-    
-    @ShellMethod("Add multi-architecture builder support.")
-    @ShellMethodAvailability("springBootMavenPluginExists")
-    public String multiArchBuilder() {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
 
-            //Update plugins
-            Plugins.addMultiArchBuilder(model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem adding native-maven-plugin.";
+		}
+		return "Successfully added native-maven-plugin.";
+	}
 
-            //Write updated model to file
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
+	@ShellMethod("Add multi-architecture builder support.")
+	public String multiArchBuilder() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
 
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem adding multi-architecture builder support.";
-        }
-        return "Successfully added multi-architecture builder support.";
-    }
+			// Update plugins
+			Plugins.addMultiArchBuilder(model);
 
-    @ShellMethod("Create Native OCI Images with paketobuildpacks/builder:tiny")
-    @ShellMethodAvailability("pomFile")
-    public String tinyBuildpackProfile() {
-        try {
-            MavenXpp3Reader reader = new MavenXpp3Reader();
-            Model model = reader.read(new FileReader(POM_FILE));
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
 
-            //Update starters
-            Profiles.removeNativeProfile(model);
-            model.getProfiles().add(Profiles.nativeProfile());
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem adding multi-architecture builder support.";
+		}
+		return "Successfully added multi-architecture builder support.";
+	}
 
-            //Write updated model to file
-            MavenXpp3Writer writer = new MavenXpp3Writer();
-            writer.write(new FileWriter(POM_FILE), model);
+	@ShellMethod("Add Spring Java Format Maven Plugin and validate goal.")
+	public String springFormat() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
 
-        } catch (XmlPullParserException | IOException e) {
-            return "There was a problem configuring Spring Native.";
-        }
-        return "Successfully configured Spring Native.";
-    }
+			// Update plugins
+			Plugins.addSpringFormat(model);
 
-    public Availability pomFile() {
-        return POM_FILE.exists()
-                ? Availability.available()
-                : Availability.unavailable(String.format("%s does not exist", POM_FILE.getName()));
-    }
-    
-    public Availability springBootMavenPluginExists() throws FileNotFoundException, IOException, XmlPullParserException {
-        MavenXpp3Reader reader = new MavenXpp3Reader();
-        Model model = reader.read(new FileReader(POM_FILE));
-        return Plugins.hasSpringBootMavenPlugin(model)
-                ? Availability.available()
-                : Availability.unavailable("Spring Boot Maven Plugin not found");
-    }
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem adding Spring Java Format Maven Plugin.";
+		}
+		return "Successfully added Spring Java Format Maven Plugin.";
+	}
+
+	@ShellMethod("Add Spring REST Docs")
+	public String springRestDocs() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
+
+			// Update plugins
+			Plugins.addSpringRESTDocs(model);
+
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem adding Spring REST docs.";
+		}
+		return "Successfully added Spring REST docs";
+	}
 
 }

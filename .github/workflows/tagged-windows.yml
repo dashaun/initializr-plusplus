@@ -25,7 +25,7 @@ jobs:
           ref: '${{github.ref_name}}'
 
       - name: Build Image
-        run: mvnw.cmd -Pnative native:compile -DskipTests
+        run: .\mvnw.cmd -Pnative native:compile -DskipTests
         
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:

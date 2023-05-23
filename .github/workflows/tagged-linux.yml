@@ -1,5 +1,5 @@
 ---
-name: "tagged-release"
+name: "tagged-linux"
 
 on:
   push:
@@ -7,8 +7,9 @@ on:
       - "v*"
 
 jobs:
-  tagged-release:
-    name: "Tagged Release"
+    
+  tagged-linux:
+    name: "Tagged linux"
     runs-on: ubuntu-latest
 
     steps:

@@ -32,38 +32,6 @@ jobs:
       - run:
           name: "upload release asset"
           command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-linux-aarch_64
-#  macos-arm64-native:
-#    machine:
-#      resource_class: macos.m1.large.gen1
-#    steps:
-#      - checkout
-#      - sdkman/setup-sdkman
-#      - sdkman/sdkman-install:
-#          candidate: java
-#          version: 22.3.1.r17-grl
-#      - run:
-#          name: "native compile"
-#          command: "./mvnw -Pnative clean native:compile -DskipTests"
-#      - gh/setup
-#      - run:
-#          name: "upload release asset"
-#          command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64
-  macos-x86_64-native:
-    machine:
-      resource_class: macos.x86.medium.gen2
-    steps:
-      - checkout
-      - sdkman/setup-sdkman
-      - sdkman/sdkman-install:
-          candidate: java
-          version: 22.3.1.r17-grl
-      - run:
-          name: "native compile"
-          command: "./mvnw -Pnative clean native:compile -DskipTests"
-      - gh/setup
-      - run:
-          name: "upload release asset"
-          command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64
 
 workflows:
   create-gh-release:
@@ -86,23 +54,3 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-#  macos-arm64-workflow:
-#    jobs:
-#      - macos-arm64-native:
-#          context:
-#            - dashaun-github
-#          filters:
-#            tags:
-#              only: /^v.*/
-#            branches:
-#              ignore: /.*/            
-  macos-x86_64-workflow:
-    jobs:
-      - macos-x86_64-native:
-          context:
-            - dashaun-github
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/            

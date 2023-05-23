@@ -1,0 +1,34 @@
+---
+name: "tagged-macos"
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+    
+  tagged-macos:
+    name: "Tagged macos"
+    runs-on: macos-latest
+
+    steps:
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          version: 'latest'
+          java-version: '17'
+          components: 'native-image'
+          github-token: "${{ secrets.GH_TOKEN }}"
+
+      - uses: actions/checkout@v3
+        with:
+          ref: '${{github.ref_name}}'
+
+      - name: Build Image
+        run: ./mvnw -Pnative native:compile -DskipTests
+
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./target/initializr-plusplus-osx-x86_64,LICENSE"
+          allowUpdates: true
+          token: ${{ secrets.GH_TOKEN }}

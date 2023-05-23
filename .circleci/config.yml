@@ -10,6 +10,7 @@ jobs:
       image: ubuntu-2004:current
       resource_class: medium
     steps:
+      - checkout
       - gh/setup
       - run:
           name: "upload release asset"

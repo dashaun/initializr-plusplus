@@ -5,6 +5,15 @@ orbs:
   sdkman: joshdholtz/sdkman@0.2.0
 
 jobs:
+  create-gh-release:
+    machine:
+      image: ubuntu-2004:current
+      resource_class: medium
+    steps:
+      - gh/setup
+      - run:
+          name: "upload release asset"
+          command: gh release create "${CIRCLE_TAG}" -t "${CIRCLE_TAG}" -n "${CIRCLE_TAG}"
   arm64-native:
     machine:
       image: ubuntu-2004:current
@@ -22,25 +31,25 @@ jobs:
       - run:
           name: "upload release asset"
           command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-linux-aarch_64
-  macos-arm64-native:
-    machine:
-      resource_class: macos.m1.large.gen1
-    steps:
-      - checkout
-      - sdkman/setup-sdkman
-      - sdkman/sdkman-install:
-          candidate: java
-          version: 22.3.1.r17-grl
-      - run:
-          name: "native compile"
-          command: "./mvnw -Pnative clean native:compile -DskipTests"
-      - gh/setup
-      - run:
-          name: "upload release asset"
-          command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64
+#  macos-arm64-native:
+#    machine:
+#      resource_class: macos.m1.large.gen1
+#    steps:
+#      - checkout
+#      - sdkman/setup-sdkman
+#      - sdkman/sdkman-install:
+#          candidate: java
+#          version: 22.3.1.r17-grl
+#      - run:
+#          name: "native compile"
+#          command: "./mvnw -Pnative clean native:compile -DskipTests"
+#      - gh/setup
+#      - run:
+#          name: "upload release asset"
+#          command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64
   macos-x86_64-native:
     machine:
-      resource_class: macos.m1.large.gen1
+      resource_class: macos.x86.medium.gen2
     steps:
       - checkout
       - sdkman/setup-sdkman
@@ -56,6 +65,16 @@ jobs:
           command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64
 
 workflows:
+  create-gh-release:
+    jobs:
+      - create-gh-release:
+          context:
+            - dashaun-github
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
   arm64-native-workflow:
     jobs:
       - arm64-native:
@@ -66,16 +85,16 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-  macos-arm64-workflow:
-    jobs:
-      - macos-arm64-native:
-          context:
-            - dashaun-github
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/            
+#  macos-arm64-workflow:
+#    jobs:
+#      - macos-arm64-native:
+#          context:
+#            - dashaun-github
+#          filters:
+#            tags:
+#              only: /^v.*/
+#            branches:
+#              ignore: /.*/            
   macos-x86_64-workflow:
     jobs:
       - macos-x86_64-native:

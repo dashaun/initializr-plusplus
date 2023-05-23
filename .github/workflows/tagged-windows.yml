@@ -29,6 +29,6 @@ jobs:
 
       - uses: ncipollo/release-action@v1
         with:
-          artifacts: "./target/initializr-plusplus-windows-x86_64,LICENSE"
+          artifacts: "./target/initializr-plusplus-windows-x86_64.exe,LICENSE"
           allowUpdates: true
           token: ${{ secrets.GH_TOKEN }}

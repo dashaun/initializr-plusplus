@@ -23,9 +23,16 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: '${{github.ref_name}}'
+          
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2    
 
       - name: Build Image
-        run: .\mvnw.cmd -Pnative native:compile -DskipTests
+        run: .\mvnw.cmd -Pnative native:compile
 
       - uses: ncipollo/release-action@v1
         with:

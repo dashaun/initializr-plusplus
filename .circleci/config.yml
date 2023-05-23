@@ -34,7 +34,7 @@ jobs:
           command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-linux-aarch_64
   macos-arm64-native:
     macos:
-      xcode: 14.2.0
+      xcode: "14.3.0"
     resource_class: macos.m1.large.gen1
     steps:
       - checkout

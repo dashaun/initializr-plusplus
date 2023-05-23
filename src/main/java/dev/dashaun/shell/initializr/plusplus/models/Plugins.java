@@ -162,15 +162,6 @@ public class Plugins {
 		p.setVersion("2.2.1");
 		p.getExecutions().add(generateDocs());
 
-		Xpp3Dom configuration = new Xpp3Dom("configuration");
-		Xpp3Dom backend = new Xpp3Dom("backend");
-		backend.setValue("html");
-		Xpp3Dom doctype = new Xpp3Dom("doctype");
-		doctype.setValue("book");
-		configuration.addChild(backend);
-		configuration.addChild(doctype);
-
-		p.setConfiguration(configuration);
 		p.getDependencies().add(Dependencies.springRestdocsAsciidoctor());
 
 		return p;
@@ -241,6 +232,16 @@ public class Plugins {
 		generateDocs.setId("generate-docs");
 		generateDocs.setPhase("prepare-package");
 		generateDocs.getGoals().add("process-asciidoc");
+
+		Xpp3Dom configuration = new Xpp3Dom("configuration");
+		Xpp3Dom backend = new Xpp3Dom("backend");
+		backend.setValue("html");
+		Xpp3Dom doctype = new Xpp3Dom("doctype");
+		doctype.setValue("book");
+		configuration.addChild(backend);
+		configuration.addChild(doctype);
+
+		generateDocs.setConfiguration(configuration);
 		return generateDocs;
 	}
 

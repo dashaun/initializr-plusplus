@@ -26,11 +26,9 @@ jobs:
 
       - name: Build Image
         run: .\mvnw.cmd -Pnative native:compile -DskipTests
-        
-      - uses: "marvinpinto/action-automatic-releases@latest"
+
+      - uses: ncipollo/release-action@v1
         with:
-          repo_token: "${{ secrets.GH_TOKEN }}"
-          prerelease: false
-          files: |
-            LICENSE
-            ./target/initializr-plusplus-windows-x86_64
+          artifacts: "./target/initializr-plusplus-windows-x86_64,LICENSE"
+          allowUpdates: true
+          token: ${{ secrets.GH_TOKEN }}

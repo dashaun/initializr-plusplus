@@ -4,7 +4,9 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 
-[![mvn test](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/mvn-test.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/mvn-test.yml)
+[![tagged-linux](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-linux.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-linux.yml)
+[![tagged-windows](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-windows.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-windows.yml)
+[![tagged-macos](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-macos.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-macos.yml)
 
 # initializr-plusplus
 ### CLI for making changes to [Spring Initializr](https://start.spring.io) projects.
@@ -95,21 +97,11 @@ or
 
 > gh release upload v#.#.# target/initializr-plusplus-$OS-$ARCH
 
-### Maintaining up-to-date dependencies
-
-Execute following command to find new dependencies
-
-- `./mvnw versions:display-dependency-updates`
-
 ### Roadmap
 
 See the [open issues](https://github.com/dashaun/initializr-plusplus/issues) for a list of proposed features (and known issues).
 
 ### Notes
-
-I want to connect different released packages back into the repository.
-Right now I am using the `gh` cli to do this manually.
-Issue #9 is to automate this process, for Windows, Linux+ARM64, Darwin+ARM64 and Darwin+AMD64.
 
 Before running `native:compile` on Windows
 > C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat

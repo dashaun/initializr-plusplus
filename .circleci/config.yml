@@ -32,6 +32,24 @@ jobs:
       - run:
           name: "upload release asset"
           command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-linux-aarch_64
+  macos-arm64-native:
+    docker:
+      - image: cimg/base:current
+    resource_class: dashaun/juice-runner
+    steps:
+      - run: echo "Hi I'm on a Container Runner"
+      - checkout
+      - sdkman/setup-sdkman
+      - sdkman/sdkman-install:
+          candidate: java
+          version: 22.3.1.r17-grl
+      - run:
+          name: "native compile"
+          command: "./mvnw -Pnative clean native:compile -DskipTests"
+      - gh/setup
+      - run:
+          name: "upload release asset"
+          command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64
 workflows:
   create-gh-release:
     jobs:
@@ -52,4 +70,14 @@ workflows:
             tags:
               only: /^v.*/
             branches:
-              ignore: /.*/       
+              ignore: /.*/
+  macos-arm64-workflow:
+    jobs:
+      - macos-arm64-native:
+          context:
+            - dashaun-github
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/               

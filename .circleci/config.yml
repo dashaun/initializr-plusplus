@@ -35,7 +35,7 @@ jobs:
   macos-arm64-native:
     docker:
       - image: cimg/base:current
-    resource_class: dashaun/juice-runner
+    resource_class: dashaun/juice-v2
     steps:
       - run: echo "Hi I'm on a Container Runner"
       - checkout

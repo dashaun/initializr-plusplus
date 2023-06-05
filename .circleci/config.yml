@@ -44,7 +44,7 @@ jobs:
           version: 22.3.1.r17-grl
       - run:
           name: "native compile"
-          command: "./mvnw -Pnative clean native:compile -DskipTests"
+          command: "sdk env && ./mvnw -Pnative clean native:compile -DskipTests"
       - run:
           name: "upload release asset"
           command: gh release upload "${CIRCLE_TAG}" ./target/initializr-plusplus-osx-aarch_64

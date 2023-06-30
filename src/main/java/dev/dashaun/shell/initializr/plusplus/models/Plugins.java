@@ -172,7 +172,7 @@ public class Plugins {
 
 		Xpp3Dom env = new Xpp3Dom("env");
 		Xpp3Dom javaOptions = new Xpp3Dom("BPE_APPEND_JAVA_TOOL_OPTIONS");
-		javaOptions.setValue("-Xlog:gc:gc.log");
+		javaOptions.setValue(" -Xlog:gc:gc.log");
 		env.addChild(javaOptions);
 		image.addChild(env);
 

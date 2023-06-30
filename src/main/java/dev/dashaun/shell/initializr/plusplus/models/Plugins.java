@@ -171,8 +171,12 @@ public class Plugins {
 		image.addChild(buildpacks);
 
 		Xpp3Dom env = new Xpp3Dom("env");
+		Xpp3Dom xmlSpace = new Xpp3Dom("BPE_DELIM_JAVA_TOOL_OPTIONS");
+		xmlSpace.setAttribute("xml:space", "preserve");
+		xmlSpace.setValue(" ");
 		Xpp3Dom javaOptions = new Xpp3Dom("BPE_APPEND_JAVA_TOOL_OPTIONS");
-		javaOptions.setValue(" -Xlog:gc:gc.log");
+		javaOptions.setValue("-Xlog:gc:gc.log");
+		env.addChild(xmlSpace);
 		env.addChild(javaOptions);
 		image.addChild(env);
 

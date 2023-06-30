@@ -62,6 +62,14 @@ public class Plugins {
 		model.getBuild().getPlugins().add(Plugins.multiArchBuilder());
 	}
 
+	public static void addZuluBuilder(Model model) {
+		model.getBuild()
+			.getPlugins()
+			.removeIf(p -> p.getGroupId().equalsIgnoreCase(SPRING_BOOT_GROUP_ID)
+					&& p.getArtifactId().equalsIgnoreCase(SPRING_BOOT_MAVEN_PLUGIN));
+		model.getBuild().getPlugins().add(Plugins.zuluBuilder());
+	}
+
 	public static void addSpringFormat(Model model) {
 		model.getBuild()
 			.getPlugins()
@@ -140,6 +148,34 @@ public class Plugins {
 		Xpp3Dom builder = new Xpp3Dom("builder");
 		builder.setValue("dashaun/builder:tiny");
 		image.addChild(builder);
+		configuration.addChild(image);
+
+		p.setConfiguration(configuration);
+		return p;
+	}
+
+	public static Plugin zuluBuilder() {
+		Plugin p = new Plugin();
+		p.setGroupId(SPRING_BOOT_GROUP_ID);
+		p.setArtifactId(SPRING_BOOT_MAVEN_PLUGIN);
+
+		Xpp3Dom configuration = new Xpp3Dom("configuration");
+		Xpp3Dom image = new Xpp3Dom("image");
+		Xpp3Dom buildpacks = new Xpp3Dom("buildpacks");
+		Xpp3Dom zuluBuildpack = new Xpp3Dom("buildpack");
+		zuluBuildpack.setValue("paketobuildpacks/azul-zulu");
+		Xpp3Dom javaBuildpack = new Xpp3Dom("buildpack");
+		javaBuildpack.setValue("paketobuildpacks/java");
+		buildpacks.addChild(zuluBuildpack);
+		buildpacks.addChild(javaBuildpack);
+		image.addChild(buildpacks);
+
+		Xpp3Dom env = new Xpp3Dom("env");
+		Xpp3Dom javaOptions = new Xpp3Dom("BPE_APPEND_JAVA_TOOL_OPTIONS");
+		javaOptions.setValue("-Xlog:gc:gc.log");
+		env.addChild(javaOptions);
+		image.addChild(env);
+
 		configuration.addChild(image);
 
 		p.setConfiguration(configuration);

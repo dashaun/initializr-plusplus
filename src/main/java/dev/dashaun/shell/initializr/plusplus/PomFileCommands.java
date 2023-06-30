@@ -149,6 +149,25 @@ public class PomFileCommands {
 		return "Successfully added multi-architecture builder support.";
 	}
 
+	@ShellMethod("Use Zulu JDK for spring-boot:build-image with JVM args")
+	public String zuluBuilder() {
+		try {
+			Model model = reader.read(new FileReader(POM_FILE));
+
+			// Update plugins
+			Plugins.addZuluBuilder(model);
+
+			// Write updated model to file
+			MavenXpp3Writer writer = new MavenXpp3Writer();
+			writer.write(new FileWriter(POM_FILE), model);
+
+		}
+		catch (XmlPullParserException | IOException e) {
+			return "There was a problem adding multi-architecture builder support.";
+		}
+		return "Successfully added multi-architecture builder support.";
+	}
+
 	@ShellMethod("Add Spring Java Format Maven Plugin and validate goal.")
 	public String springFormat() {
 		try {

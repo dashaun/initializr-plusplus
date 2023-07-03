@@ -63,15 +63,17 @@ public class MavenExtensionCommands {
 				               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 				               xsi:schemaLocation="http://jgitver.github.io/maven/configuration/1.1.0 https://jgitver.github.io/maven/configuration/jgitver-configuration-v1_1_0.xsd">
 				    <strategy>CONFIGURABLE</strategy>
-				    <policy>LATEST</policy>
+				    <policy>MAX</policy>
 				    <autoIncrementPatch>true</autoIncrementPatch>
-				    <useCommitDistance>false</useCommitDistance>
 				    <useDirty>true</useDirty>
 				    <useGitCommitId>false</useGitCommitId>
-				    <useSnapshot>false</useSnapshot>
+				    <useSnapshot>true</useSnapshot>
 				    <gitCommitIdLength>8</gitCommitIdLength>
 				    <nonQualifierBranches>main</nonQualifierBranches>
 				    <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>
+				    <exclusions>    <!-- Optional list of directory path -->
+				        <exclusion>.m2</exclusion>    <!-- relative path from project root directory -->
+				    </exclusions>
 				</configuration>
 				""";
 	}

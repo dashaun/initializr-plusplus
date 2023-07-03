@@ -146,8 +146,14 @@ public class Plugins {
 		Xpp3Dom configuration = new Xpp3Dom("configuration");
 		Xpp3Dom image = new Xpp3Dom("image");
 		Xpp3Dom builder = new Xpp3Dom("builder");
+		Xpp3Dom createdDate = new Xpp3Dom("createdDate");
+		Xpp3Dom name = new Xpp3Dom("name");
 		builder.setValue("dashaun/builder:tiny");
+		createdDate.setValue("now");
+		name.setValue("${project.groupId}/${project.artifactId}:v${project.version}-${os.detected.arch}");
 		image.addChild(builder);
+		image.addChild(createdDate);
+		image.addChild(name);
 		configuration.addChild(image);
 
 		p.setConfiguration(configuration);

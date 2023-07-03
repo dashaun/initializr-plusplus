@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.1.0</version>
+    <version>3.1.1</version>
     <relativePath></relativePath>
   </parent>
   <groupId>dev.dashaun.shell.initializr</groupId>
@@ -13,7 +13,7 @@
   <version>0</version>
   <name>${project.groupId}:${project.artifactId}</name>
   <properties>
-    <spring-shell.version>3.1.0</spring-shell.version>
+    <spring-shell.version>3.1.2</spring-shell.version>
     <java.version>17</java.version>
   </properties>
   <dependencyManagement>

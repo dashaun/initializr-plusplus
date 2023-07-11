@@ -6,7 +6,7 @@
     <autoIncrementPatch>true</autoIncrementPatch>
     <useDirty>true</useDirty>
     <useGitCommitId>false</useGitCommitId>
-    <useSnapshot>true</useSnapshot>
+    <useSnapshot>false</useSnapshot>
     <gitCommitIdLength>8</gitCommitIdLength>
     <nonQualifierBranches>main</nonQualifierBranches>
     <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>

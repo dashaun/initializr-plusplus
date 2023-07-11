@@ -71,7 +71,7 @@ public class PipelineCommands {
 				          docker-username: DOCKER_LOGIN
 				          docker-password: DOCKERHUB_PASSWORD
 				      - docker/push:
-				          image: $IMAGE_NAME
+				          image: dashaun/$CIRCLE_PROJECT_REPONAME
 				          tag: $CIRCLE_TAG-aarch_64
 
 				workflows:
@@ -80,8 +80,6 @@ public class PipelineCommands {
 				      - arm64-native:
 				          context:
 				            - dashaun-dockerhub
-				          environment:
-				            IMAGE_NAME: CHANGEME
 				          filters:
 				            tags:
 				              only: /^v.*/
@@ -165,7 +163,7 @@ public class PipelineCommands {
 	}
 
 	private void githubDir() throws IOException {
-		File file = new File("./.github");
+		File file = new File("./.github/workflows");
 		if (!file.exists()) {
 			if (!file.mkdir()) {
 				throw new IOException("Couldn't create directory");

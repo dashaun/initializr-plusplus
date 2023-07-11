@@ -98,7 +98,7 @@ public class PipelineCommands {
 				      - "v*"
 
 				env:
-				  IMAGE_NAME: CHANGEME
+				  IMAGE_NAME: dashaun/${GITHUB_REPOSITORY#*/}
 
 				jobs:
 				  build:

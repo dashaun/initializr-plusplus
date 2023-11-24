@@ -16,7 +16,7 @@
 - This tool decreases the amount of time between `T-Initialize` and `T-Production`
   - This improves the `Fifth Metric` Mean Time To Dopamine (MTTD)
 - This tool provides commands via CLI and interactive shell
-  - Add the `jtigver-maven-plugn` and `os-maven-plugin` as Maven Extensions
+  - Add the `jgitver-maven-plugin` and `os-maven-plugin` as Maven Extensions
   - Update the `project-description`
   - Update the `project-name`
   - Update the `project-version`

@@ -32,7 +32,7 @@ public class PomFileCommands {
 		catch (XmlPullParserException | IOException e) {
 			return "There was a problem updating the project version.";
 		}
-		return String.format("Successfully set project version to '%s'", version);
+		return "Successfully set project version to '%s'".formatted(version);
 	}
 
 	@ShellMethod("Update the project description")
@@ -52,7 +52,7 @@ public class PomFileCommands {
 			return "There was a problem updating the project description.";
 		}
 		return "".equals(description) ? "Successfully removed the project description."
-				: String.format("Successfully set project name to '%s'", description);
+				: "Successfully set project name to '%s'".formatted(description);
 	}
 
 	@ShellMethod("Update the project name")
@@ -66,7 +66,7 @@ public class PomFileCommands {
 		catch (XmlPullParserException | IOException e) {
 			return "There was a problem updating the project name.";
 		}
-		return String.format("Successfully set project name to '%s'", name);
+		return "Successfully set project name to '%s'".formatted(name);
 	}
 
 	@ShellMethod("Add AWS Lambda profile for Spring Cloud Functions")

@@ -5,6 +5,8 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
+import java.util.List;
+
 public class Plugins {
 
 	private static final String MAVEN_ASSEMBLY_PLUGIN = "maven-assembly-plugin";
@@ -150,13 +152,18 @@ public class Plugins {
 		Xpp3Dom name = new Xpp3Dom("name");
 		builder.setValue("dashaun/builder:tiny");
 		createdDate.setValue("now");
-		name.setValue("${project.groupId}/${project.artifactId}:v${project.version}-${os.detected.arch}");
+		name.setValue("dashaun/${project.name}:v${project.version}-${os.detected.arch}");
 		image.addChild(builder);
 		image.addChild(createdDate);
 		image.addChild(name);
 		configuration.addChild(image);
 
 		p.setConfiguration(configuration);
+
+		PluginExecution execution = new PluginExecution();
+		execution.setId("build-info");
+		execution.addGoal("build-info");
+		p.setExecutions(List.of(execution));
 		return p;
 	}
 
@@ -196,7 +203,7 @@ public class Plugins {
 		Plugin p = new Plugin();
 		p.setGroupId("io.spring.javaformat");
 		p.setArtifactId("spring-javaformat-maven-plugin");
-		p.setVersion("0.0.39");
+		p.setVersion("0.0.40");
 		p.getExecutions().add(validate());
 		return p;
 	}
@@ -218,10 +225,6 @@ public class Plugins {
 		Plugin p = new Plugin();
 		p.setGroupId("org.graalvm.buildtools");
 		p.setArtifactId("native-maven-plugin");
-		// p.setVersion("${native-buildtools.version}");
-		// p.setExtensions(true);
-		// p.getExecutions().add(testNative());
-		// p.getExecutions().add(buildNative());
 		return p;
 	}
 

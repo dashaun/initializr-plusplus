@@ -50,7 +50,7 @@ public class PipelineCommands {
 				version: 2.1
 
 				orbs:
-				  docker: circleci/docker@2.2.0
+				  docker: circleci/docker@2.4.0
 				  sdkman: joshdholtz/sdkman@0.2.0
 
 				jobs:
@@ -66,7 +66,7 @@ public class PipelineCommands {
 				          version: 22.3.r17-grl
 				      - run:
 				          name: "mvnw -Pnative spring-boot:build-image"
-				          command: "./mvnw -Pnative spring-boot:build-image -DskipTests"
+				          command: "./mvnw -Pnative spring-boot:build-image"
 				      - docker/check:
 				          docker-username: DOCKER_LOGIN
 				          docker-password: DOCKERHUB_PASSWORD
@@ -122,7 +122,7 @@ public class PipelineCommands {
 				          submodules: true
 				      #Build Image
 				      - name: Build Image
-				        run: ./mvnw -Pnative spring-boot:build-image -DskipTests
+				        run: ./mvnw -Pnative spring-boot:build-image
 				      #Deploy the image to the Docker registry
 				      - name: Push Images to Docker Registry
 				        run: docker push -a $IMAGE_NAME
@@ -165,7 +165,7 @@ public class PipelineCommands {
 	private void githubDir() throws IOException {
 		File file = new File("./.github/workflows");
 		if (!file.exists()) {
-			if (!file.mkdir()) {
+			if (!file.mkdirs()) {
 				throw new IOException("Couldn't create directory");
 			}
 		}

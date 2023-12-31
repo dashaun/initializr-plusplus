@@ -9,7 +9,6 @@ import java.io.IOException;
 import static dev.dashaun.shell.initializr.plusplus.Application.writeStringToFile;
 
 @ShellComponent
-// @ShellCommandGroup("./.mvn/")
 public class MavenExtensionCommands {
 
 	@ShellMethod("add mvn extensions and config")
@@ -51,7 +50,7 @@ public class MavenExtensionCommands {
 				    <extension>
 				        <groupId>kr.motd.maven</groupId>
 				        <artifactId>os-maven-plugin</artifactId>
-				        <version>1.7.0</version>
+				        <version>1.7.1</version>
 				    </extension>
 				</extensions>
 				""";
@@ -65,9 +64,9 @@ public class MavenExtensionCommands {
 				    <strategy>CONFIGURABLE</strategy>
 				    <policy>MAX</policy>
 				    <autoIncrementPatch>true</autoIncrementPatch>
-				    <useDirty>true</useDirty>
+				    <useDirty>false</useDirty>
 				    <useGitCommitId>false</useGitCommitId>
-				    <useSnapshot>true</useSnapshot>
+				    <useSnapshot>false</useSnapshot>
 				    <gitCommitIdLength>8</gitCommitIdLength>
 				    <nonQualifierBranches>main</nonQualifierBranches>
 				    <useDefaultBranchingPolicy>true</useDefaultBranchingPolicy>

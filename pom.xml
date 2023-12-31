@@ -14,7 +14,7 @@
   <name>${project.groupId}:${project.artifactId}</name>
   <properties>
     <spring-shell.version>3.1.6</spring-shell.version>
-    <java.version>17</java.version>
+    <java.version>21</java.version>
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -68,11 +68,6 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <image>
-            <builder>dashaun/builder:tiny</builder>
-          </image>
-        </configuration>
       </plugin>
       <plugin>
         <groupId>io.spring.javaformat</groupId>
@@ -80,12 +75,9 @@
         <version>0.0.39</version>
         <executions>
           <execution>
-            <id>validate</id>
-            <phase>validate</phase>
             <goals>
               <goal>validate</goal>
             </goals>
-            <inherited>true</inherited>
           </execution>
         </executions>
       </plugin>

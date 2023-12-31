@@ -56,7 +56,7 @@ public class PomFileCommands {
 	}
 
 	@ShellMethod("Update the project name")
-	public String projectName(@ShellOption(defaultValue = "${project.groupId}:${project.artifactId}") String name) {
+	public String projectName(@ShellOption(defaultValue = "${project.groupId}.${project.artifactId}") String name) {
 		try {
 			Model model = reader.read(new FileReader(POM_FILE));
 			model.setName(name);

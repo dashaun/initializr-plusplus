@@ -148,12 +148,17 @@ public class Plugins {
 		Xpp3Dom configuration = new Xpp3Dom("configuration");
 		Xpp3Dom image = new Xpp3Dom("image");
 		Xpp3Dom builder = new Xpp3Dom("builder");
+		Xpp3Dom buildpacks = new Xpp3Dom("buildpacks");
+		Xpp3Dom buildpack = new Xpp3Dom("buildpack");
 		Xpp3Dom createdDate = new Xpp3Dom("createdDate");
 		Xpp3Dom name = new Xpp3Dom("name");
-		builder.setValue("dashaun/builder:tiny");
+		builder.setValue("paketobuildpacks/builder-jammy-buildpackless-tiny");
+		buildpack.setValue("paketobuildpacks/java-native-image");
+		buildpacks.addChild(buildpack);
 		createdDate.setValue("now");
 		name.setValue("dashaun/${project.name}:v${project.version}-${os.detected.arch}");
 		image.addChild(builder);
+		image.addChild(buildpacks);
 		image.addChild(createdDate);
 		image.addChild(name);
 		configuration.addChild(image);

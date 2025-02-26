@@ -6,6 +6,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 import org.springframework.shell.Availability;
+import org.springframework.shell.command.annotation.Command;
 import org.springframework.shell.standard.*;
 
 import java.io.*;
@@ -55,6 +56,7 @@ public class PomFileCommands {
 				: "Successfully set project name to '%s'".formatted(description);
 	}
 
+	@Command
 	@ShellMethod("Update the project name")
 	public String projectName(@ShellOption(defaultValue = "${project.groupId}.${project.artifactId}") String name) {
 		try {

@@ -9,3 +9,5 @@ spring:
   shell:
     history:
       enabled: 'false'
+    interactive:
+      enabled: true

@@ -16,7 +16,7 @@
 - This tool decreases the amount of time between `T-Initialize` and `T-Production`
   - This improves the `Fifth Metric` Mean Time To Dopamine (MTTD)
 - This tool provides commands via CLI and interactive shell
-  - Add the `jgitver-maven-plugin` and `os-maven-plugin` as Maven Extensions
+  - Add the `maven-git-versioning-extension` and `os-maven-plugin` as Maven Extensions
   - Update the `project-description`
   - Update the `project-name`
   - Update the `project-version`
@@ -52,6 +52,9 @@ Application Config Commands
 
 Built-In Commands
        help: Display help about available commands
+       stacktrace: Display the full stacktrace of the last error.
+       clear: Clear the shell screen.
+       quit, exit: Exit the shell.
        history: Display or save the history of previously run commands
        version: Show version info
        script: Read and execute commands from a file.
@@ -62,15 +65,23 @@ Cloud Function Example
 Maven Extension Commands
        extensions: add mvn extensions and config
 
+Pipeline Commands
+       multi-arch-manifests: pipelines to create multi-architecture manifests
+
 Pom File Commands
        native-maven-plugin: Support for GraalVM native-image compiler.
        multi-arch-builder: Add multi-architecture builder support.
        project-name: Update the project name
-       tiny-buildpack-profile: Create Native OCI Images with paketobuildpacks/builder:tiny
+       spring-format: Add Spring Java Format Maven Plugin and validate goal.
+       spring-rest-docs: Add Spring REST Docs
        project-version: Update the project version
        lambda-profile: Add AWS Lambda profile for Spring Cloud Functions
        webflux-profile: Add a 'webflux' profile for Spring Cloud Functions
+       zulu-builder: Use Zulu JDK for spring-boot:build-image with JVM args
        project-description: Update the project description
+
+Read Me Commands
+       add-read-me: add ReadMe.md file
 ```
 
 ## Built with:

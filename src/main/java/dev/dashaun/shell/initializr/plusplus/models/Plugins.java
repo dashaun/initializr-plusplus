@@ -208,7 +208,7 @@ public class Plugins {
 		Plugin p = new Plugin();
 		p.setGroupId("io.spring.javaformat");
 		p.setArtifactId("spring-javaformat-maven-plugin");
-		p.setVersion("0.0.40");
+		p.setVersion("0.0.47");
 		p.getExecutions().add(validate());
 		return p;
 	}

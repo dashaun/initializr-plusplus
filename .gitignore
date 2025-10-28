@@ -33,3 +33,5 @@ build/
 .vscode/
 
 spring-shell.log
+### maven-git-versioning-extension
+.git-versioned-pom.xml

@@ -11,9 +11,15 @@ public class Dependencies {
 
 	private final static String COM_DOT_AMAZONAWS = "com.amazonaws";
 
+    private final static String COM_VMWARE_GEMFIRE = "com.vmware.gemfire";
+
+    private final static String GEMFIRE_CORE = "gemfire-core";
+
 	private final static String SPRING_EXPERIMENTAL = "org.springframework.experimental";
 
 	private final static String SPRING_NATIVE = "spring-native";
+
+    private final static String SPRING_BOOT_GEMFIRE = "spring-boot-3.5-gemfire-10.1";
 
 	private final static String SPRING_CLOUD_GROUP_ID = "org.springframework.cloud";
 
@@ -36,6 +42,35 @@ public class Dependencies {
 			.removeIf(d -> (d.getGroupId().equalsIgnoreCase(SPRING_CLOUD_GROUP_ID)
 					&& d.getArtifactId().equalsIgnoreCase(SPRING_CLOUD_FUNCTION_AWS)));
 	}
+
+    public static void addSpringDataGemfire(Model model) {
+        model.getDependencies()
+                .removeIf(d -> (d.getGroupId().equalsIgnoreCase(COM_VMWARE_GEMFIRE)
+                && d.getArtifactId().equalsIgnoreCase(GEMFIRE_CORE)));
+        model.getDependencies()
+                .removeIf(d -> (d.getGroupId().equalsIgnoreCase(COM_VMWARE_GEMFIRE)
+                        && d.getArtifactId().equalsIgnoreCase(SPRING_BOOT_GEMFIRE)));
+        model.getDependencies()
+                .add(gemfireCore());
+        model.getDependencies()
+                .add(springBootGemfire());
+    }
+
+    public static Dependency gemfireCore() {
+        Dependency u = new Dependency();
+        u.setGroupId(COM_VMWARE_GEMFIRE);
+        u.setArtifactId(GEMFIRE_CORE);
+        u.setVersion("10.1.4");
+        return u;
+    }
+
+    public static Dependency springBootGemfire() {
+        Dependency u = new Dependency();
+        u.setGroupId(COM_VMWARE_GEMFIRE);
+        u.setArtifactId(SPRING_BOOT_GEMFIRE);
+        u.setVersion("2.0.0");
+        return u;
+    }
 
 	public static Dependency springNative() {
 		Dependency u = new Dependency();

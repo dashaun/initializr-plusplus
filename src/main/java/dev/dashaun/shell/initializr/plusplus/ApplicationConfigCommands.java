@@ -63,15 +63,17 @@ public class ApplicationConfigCommands {
 
 	private String applicationYaml() {
 		return """
-				management:
-				  endpoints:
-				    enabled-by-default: true
-				    health:
-				      show-details: always
-				    web:
-				      exposure:
-				        include: '*'
-				""";
+                management:
+                  endpoints:
+                    web:
+                      exposure:
+                        include: '*'
+                    access:
+                      default: read_only
+                  endpoint:
+                    health:
+                      show-details: always
+                """;
 	}
 
 	private static String javaAssembly() {

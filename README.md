@@ -68,6 +68,9 @@ Maven Extension Commands
 Pipeline Commands
        multi-arch-manifests: pipelines to create multi-architecture manifests
 
+Mise Commands
+       setup-mise-java: Create mise.toml and set Java tool from mise-java catalog
+
 Pom File Commands
        native-maven-plugin: Support for GraalVM native-image compiler.
        multi-arch-builder: Add multi-architecture builder support.

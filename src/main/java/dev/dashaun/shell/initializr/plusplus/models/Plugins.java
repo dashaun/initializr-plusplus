@@ -3,6 +3,7 @@ package dev.dashaun.shell.initializr.plusplus.models;
 import org.apache.maven.model.Model;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
+import org.apache.maven.model.Profile;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
 import java.util.List;
@@ -54,6 +55,27 @@ public class Plugins {
 			.removeIf(p -> p.getGroupId().equalsIgnoreCase(GRAALVM_BUILDTOOLS_GROUP_ID)
 					&& p.getArtifactId().equalsIgnoreCase(NATIVE_MAVEN_PLUGIN));
 		model.getBuild().getPlugins().add(Plugins.nativeMavenPlugin());
+	}
+
+	public static boolean hasNativeMavenPlugin(Model model) {
+		List<Plugin> rootPlugins = (model.getBuild() == null || model.getBuild().getPlugins() == null) ? List.of()
+				: model.getBuild().getPlugins();
+		boolean foundInRoot = rootPlugins.stream().anyMatch(Plugins::isNativeMavenPlugin);
+		if (foundInRoot) {
+			return true;
+		}
+
+		List<Profile> profiles = model.getProfiles() == null ? List.of() : model.getProfiles();
+		for (Profile profile : profiles) {
+			if (profile.getBuild() == null || profile.getBuild().getPlugins() == null) {
+				continue;
+			}
+			if (profile.getBuild().getPlugins().stream().anyMatch(Plugins::isNativeMavenPlugin)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static void addMultiArchBuilder(Model model) {
@@ -218,6 +240,11 @@ public class Plugins {
 		p.setGroupId("org.graalvm.buildtools");
 		p.setArtifactId("native-maven-plugin");
 		return p;
+	}
+
+	private static boolean isNativeMavenPlugin(Plugin plugin) {
+		return NATIVE_MAVEN_PLUGIN.equals(plugin.getArtifactId())
+				&& GRAALVM_BUILDTOOLS_GROUP_ID.equals(plugin.getGroupId());
 	}
 
 	public static Plugin mavenAssemblyPluginJava() {

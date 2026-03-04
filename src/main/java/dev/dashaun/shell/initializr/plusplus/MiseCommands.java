@@ -29,6 +29,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -107,12 +108,48 @@ public class MiseCommands {
 		}
 	}
 
+	@ShellMethod(value = "Configure hk in an existing mise.toml", key = "setup-mise-hk")
+	@ShellMethodAvailability("setupMiseHkAvailability")
+	public String setupMiseHk() {
+		try {
+			HkProjectAnalyzer.ProjectAnalysis analysis = HkProjectAnalyzer.analyze(Path.of("."), readPomModelIfPresent());
+			String miseToml = Files.readString(MISE_FILE.toPath());
+			for (HkConfigRenderer.Tool tool : HkConfigRenderer.requiredTools(analysis)) {
+				miseToml = MiseTomlEditor.upsertAssignment(miseToml, "tools", tool.key(), "\"latest\"");
+			}
+			miseToml = MiseTomlEditor.upsertAssignment(miseToml, "tools", "hk",
+					"{ version = \"latest\", postinstall = \"hk install --mise\" }");
+			miseToml = MiseTomlEditor.upsertAssignment(miseToml, "env", "HK_MISE", "1");
+			miseToml = MiseTomlEditor.upsertAssignment(miseToml, "tasks.pre-commit", "run", "\"hk run pre-commit\"");
+			Files.writeString(MISE_FILE.toPath(), miseToml);
+			Files.writeString(Path.of("hk.pkl"), HkConfigRenderer.renderHkConfig(analysis));
+			if (analysis.sqlDialect() != null) {
+				Files.writeString(Path.of(".sqlfluff"), HkConfigRenderer.renderSqlfluffConfig(analysis.sqlDialect()));
+			}
+			return analysis.sqlDialect() == null ? "Successfully configured hk in mise.toml and wrote hk.pkl."
+					: "Successfully configured hk in mise.toml and wrote hk.pkl and .sqlfluff.";
+		}
+		catch (Exception e) {
+			return "There was a problem configuring hk: " + e.getMessage();
+		}
+	}
+
 	public Availability setupMiseJavaAvailability() {
 		if (!POM_FILE.exists()) {
 			return Availability.unavailable("pom.xml was not found in the current directory");
 		}
 		if (MISE_FILE.exists()) {
 			return Availability.unavailable("mise.toml already exists in the current directory");
+		}
+		return Availability.available();
+	}
+
+	public Availability setupMiseHkAvailability() {
+		if (!isCommandOnPath("mise")) {
+			return Availability.unavailable("mise is not available on PATH");
+		}
+		if (!MISE_FILE.exists()) {
+			return Availability.unavailable("mise.toml was not found in the current directory");
 		}
 		return Availability.available();
 	}
@@ -213,6 +250,15 @@ public class MiseCommands {
 				java = "%s"
 				""".formatted(javaChoice);
 		Files.writeString(MISE_FILE.toPath(), content);
+	}
+
+	private Model readPomModelIfPresent() throws Exception {
+		if (!POM_FILE.exists()) {
+			return null;
+		}
+		try (FileReader fileReader = new FileReader(POM_FILE)) {
+			return reader.read(fileReader);
+		}
 	}
 
 	private Integer resolvePomJavaMajor(Model model) {
@@ -337,6 +383,37 @@ public class MiseCommands {
 			return "x86_64";
 		}
 		throw new IllegalStateException("Unsupported architecture: " + osArch);
+	}
+
+	private boolean isCommandOnPath(String command) {
+		String pathValue = System.getenv("PATH");
+		if (pathValue == null || pathValue.isBlank()) {
+			return false;
+		}
+		List<String> candidates = new ArrayList<>();
+		candidates.add(command);
+		if (resolveOperatingSystem().equals("windows")) {
+			String pathExt = System.getenv("PATHEXT");
+			if (pathExt != null && !pathExt.isBlank()) {
+				for (String extension : pathExt.split(";")) {
+					candidates.add(command + extension.toLowerCase(Locale.ROOT));
+				}
+			}
+			else {
+				candidates.add(command + ".exe");
+				candidates.add(command + ".cmd");
+				candidates.add(command + ".bat");
+			}
+		}
+		for (String entry : pathValue.split(File.pathSeparator)) {
+			for (String candidateName : candidates) {
+				Path candidate = Path.of(entry, candidateName);
+				if (Files.isExecutable(candidate)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	private record JavaOption(String choice, String vendor, int major, String jvmImpl) {

@@ -70,6 +70,7 @@ Pipeline Commands
 
 Mise Commands
        setup-mise-java: Create mise.toml and set Java tool from mise-java catalog
+       setup-mise-hk: Configure hk in an existing mise.toml
 
 Pom File Commands
        native-maven-plugin: Support for GraalVM native-image compiler.

@@ -1,0 +1,60 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact: initializr-plusplus-linux-x86_64
+          - os: ubuntu-24.04-arm
+            artifact: initializr-plusplus-linux-aarch_64
+          - os: macos-13
+            artifact: initializr-plusplus-osx-x86_64
+          - os: macos-latest
+            artifact: initializr-plusplus-osx-aarch_64
+          - os: windows-latest
+            artifact: initializr-plusplus-windows-x86_64.exe
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: '25'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-${{ runner.arch }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-${{ runner.arch }}-m2
+
+      - name: Build native binary
+        run: ./mvnw -Pnative clean native:compile -DskipTests
+        shell: bash
+
+      - name: Upload to release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "./target/${{ matrix.artifact }}"
+          allowUpdates: true
+          token: ${{ secrets.GH_TOKEN }}

@@ -4,9 +4,7 @@
 [![Issues][issues-shield]][issues-url]
 [![License][license-shield]][license-url]
 
-[![tagged-linux](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-linux.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-linux.yml)
-[![tagged-windows](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-windows.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-windows.yml)
-[![tagged-macos](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-macos.yml/badge.svg)](https://github.com/dashaun/spring-initializer-next-step/actions/workflows/tagged-macos.yml)
+[![release](https://github.com/dashaun/initializr-plusplus/actions/workflows/release.yml/badge.svg)](https://github.com/dashaun/initializr-plusplus/actions/workflows/release.yml)
 
 # initializr-plusplus
 ### CLI for making changes to [Spring Initializr](https://start.spring.io) projects.

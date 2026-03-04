@@ -18,8 +18,6 @@ jobs:
             artifact: initializr-plusplus-linux-x86_64
           - os: ubuntu-24.04-arm
             artifact: initializr-plusplus-linux-aarch_64
-          - os: macos-13
-            artifact: initializr-plusplus-osx-x86_64
           - os: macos-latest
             artifact: initializr-plusplus-osx-aarch_64
           - os: windows-latest
@@ -53,8 +51,6 @@ jobs:
         shell: bash
 
       - name: Upload to release
-        uses: ncipollo/release-action@v1
+        uses: softprops/action-gh-release@v2
         with:
-          artifacts: "./target/${{ matrix.artifact }}"
-          allowUpdates: true
-          token: ${{ secrets.GH_TOKEN }}
+          files: ./target/${{ matrix.artifact }}

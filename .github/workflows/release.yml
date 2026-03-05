@@ -16,12 +16,16 @@ jobs:
         include:
           - os: ubuntu-latest
             artifact: initializr-plusplus-linux-x86_64
+            binary: plusplus
           - os: ubuntu-24.04-arm
             artifact: initializr-plusplus-linux-aarch_64
+            binary: plusplus
           - os: macos-latest
             artifact: initializr-plusplus-osx-aarch_64
+            binary: plusplus
           - os: windows-latest
             artifact: initializr-plusplus-windows-x86_64.exe
+            binary: plusplus.exe
 
     runs-on: ${{ matrix.os }}
 
@@ -48,6 +52,10 @@ jobs:
 
       - name: Build native binary
         run: ./mvnw -Pnative clean native:compile -DskipTests
+        shell: bash
+
+      - name: Rename binary
+        run: mv ./target/${{ matrix.binary }} ./target/${{ matrix.artifact }}
         shell: bash
 
       - name: Upload to release

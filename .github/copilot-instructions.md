@@ -33,7 +33,7 @@ All shell commands are implemented as `@ShellComponent` classes in `dev.dashaun.
 - **`PomFileCommands`** – reads/writes `./pom.xml` using `MavenXpp3Reader` / `MavenXpp3Writer`
 - **`ApplicationConfigCommands`** – writes `./src/main/resources/application.yaml` and assembly descriptors
 - **`MavenExtensionCommands`** – creates `./.mvn/extensions.xml` and related config files
-- **`PipelineCommands`** – generates CI pipeline configs (CircleCI, GitHub Actions) in the target project
+- **`PipelineCommands`** – generates GitHub Actions workflows for multi-architecture Docker image builds in the target project
 - **`CloudFunctionExample`** – injects a Spring Cloud Function `@Bean` into `DemoApplication.java`
 - **`ReadMeCommands`** – adds a README.md to the target project
 

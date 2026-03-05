@@ -14,25 +14,13 @@ public class PipelineCommands {
 	@ShellMethod("pipelines to create multi-architecture manifests")
 	public String multiArchManifests() {
 		try {
-			circleciDir();
 			githubDir();
-			addCircleCIConfig();
 			addGithubWorkflow();
 		}
 		catch (IOException ioException) {
 			return "There was a problem adding pipeline configs";
 		}
 		return "Successfully added pipeline configs";
-	}
-
-	private void addCircleCIConfig() throws IOException {
-		File file = new File("./.circleci/config.yml");
-		if (!file.exists()) {
-			writeStringToFile(circleCIConfigFile(), file);
-		}
-		else {
-			throw new IOException("File already exists");
-		}
 	}
 
 	private void addGithubWorkflow() throws IOException {
@@ -45,52 +33,9 @@ public class PipelineCommands {
 		}
 	}
 
-	private String circleCIConfigFile() {
-		return """
-				version: 2.1
-
-				orbs:
-				  docker: circleci/docker@2.4.0
-				  sdkman: joshdholtz/sdkman@0.2.0
-
-				jobs:
-				  arm64-native:
-				    machine:
-				      image: ubuntu-2004:current
-				      resource_class: arm.medium
-				    steps:
-				      - checkout
-				      - sdkman/setup-sdkman
-				      - sdkman/sdkman-install:
-				          candidate: java
-				          version: 22.3.r17-grl
-				      - run:
-				          name: "mvnw -Pnative spring-boot:build-image"
-				          command: "./mvnw -Pnative spring-boot:build-image"
-				      - docker/check:
-				          docker-username: DOCKER_LOGIN
-				          docker-password: DOCKERHUB_PASSWORD
-				      - docker/push:
-				          image: dashaun/$CIRCLE_PROJECT_REPONAME
-				          tag: $CIRCLE_TAG-aarch_64
-
-				workflows:
-				  arm64-native-workflow:
-				    jobs:
-				      - arm64-native:
-				          context:
-				            - dashaun-dockerhub
-				          filters:
-				            tags:
-				              only: /^v.*/
-				            branches:
-				              ignore: /.*/
-				""";
-	}
-
 	private String githubWorkflowFile() {
 		return """
-				name: Native-AMD64
+				name: Multi-Architecture Image
 
 				on:
 				  push:
@@ -101,65 +46,68 @@ public class PipelineCommands {
 				  IMAGE_NAME: dashaun/${GITHUB_REPOSITORY#*/}
 
 				jobs:
-				  build:
-
+				  build-amd64:
 				    runs-on: ubuntu-latest
-
 				    steps:
-				      #Login to DockerHub
+				      - uses: actions/checkout@v4
+				      - name: Setup Java with SDKMAN
+				        run: |
+				          curl -s "https://get.sdkman.io" | bash
+				          source "$HOME/.sdkman/bin/sdkman-init.sh"
+				          sdk install java 25.0.2.r25-nik
+				          echo "JAVA_HOME=$HOME/.sdkman/candidates/java/current" >> $GITHUB_ENV
+				          echo "$HOME/.sdkman/candidates/java/current/bin" >> $GITHUB_PATH
 				      - name: Login to DockerHub
-				        uses: docker/login-action@v2
+				        uses: docker/login-action@v3
 				        with:
-				          username: dashaun
+				          username: ${{ secrets.DOCKERHUB_USERNAME }}
 				          password: ${{ secrets.DOCKERHUB_TOKEN }}
-				      - uses: actions/setup-java@v2
-				        with:
-				          distribution: 'liberica' # See 'Supported distributions' for available options
-				          java-version: '17'
-				      - name: Checkout master
-				        uses: actions/checkout@v3
-				        with:
-				          submodules: true
-				      #Build Image
-				      - name: Build Image
-				        run: ./mvnw -Pnative spring-boot:build-image
-				      #Deploy the image to the Docker registry
-				      - name: Push Images to Docker Registry
-				        run: docker push -a $IMAGE_NAME
+				      - name: Build amd64 image
+				        run: ./mvnw -Pnative spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME:$GITHUB_REF_NAME-x86_64
+				      - name: Push amd64 image
+				        run: docker push $IMAGE_NAME:$GITHUB_REF_NAME-x86_64
 
+				  build-arm64:
+				    runs-on: ubuntu-24.04-arm
+				    steps:
+				      - uses: actions/checkout@v4
+				      - name: Setup Java with SDKMAN
+				        run: |
+				          curl -s "https://get.sdkman.io" | bash
+				          source "$HOME/.sdkman/bin/sdkman-init.sh"
+				          sdk install java 25.0.2.r25-nik
+				          echo "JAVA_HOME=$HOME/.sdkman/candidates/java/current" >> $GITHUB_ENV
+				          echo "$HOME/.sdkman/candidates/java/current/bin" >> $GITHUB_PATH
+				      - name: Login to DockerHub
+				        uses: docker/login-action@v3
+				        with:
+				          username: ${{ secrets.DOCKERHUB_USERNAME }}
+				          password: ${{ secrets.DOCKERHUB_TOKEN }}
+				      - name: Build arm64 image
+				        run: ./mvnw -Pnative spring-boot:build-image -Dspring-boot.build-image.imageName=$IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
+				      - name: Push arm64 image
+				        run: docker push $IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
 
 				  manifest:
-				    needs: build
+				    needs: [build-amd64, build-arm64]
 				    runs-on: ubuntu-latest
 				    steps:
 				      - name: Login to DockerHub
-				        uses: docker/login-action@v2
+				        uses: docker/login-action@v3
 				        with:
-				          username: dashaun
+				          username: ${{ secrets.DOCKERHUB_USERNAME }}
 				          password: ${{ secrets.DOCKERHUB_TOKEN }}
-				      - name: pull-arm64
-				        uses: nick-fields/retry@v2
-				        with:
-				          timeout_minutes: 5
-				          retry_wait_seconds: 60
-				          max_attempts: 6
-				          command: docker pull $IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
-				      - name: create-manifest
+				      - name: Create and push manifest
 				        run: |
-				          docker manifest create $IMAGE_NAME:$GITHUB_REF_NAME --amend $IMAGE_NAME:$GITHUB_REF_NAME-x86_64 --amend $IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
+				          docker manifest create $IMAGE_NAME:$GITHUB_REF_NAME \\
+				            --amend $IMAGE_NAME:$GITHUB_REF_NAME-x86_64 \\
+				            --amend $IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
 				          docker manifest push $IMAGE_NAME:$GITHUB_REF_NAME
-				          docker manifest create $IMAGE_NAME:latest --amend $IMAGE_NAME:$GITHUB_REF_NAME-x86_64 --amend $IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
+				          docker manifest create $IMAGE_NAME:latest \\
+				            --amend $IMAGE_NAME:$GITHUB_REF_NAME-x86_64 \\
+				            --amend $IMAGE_NAME:$GITHUB_REF_NAME-aarch_64
 				          docker manifest push $IMAGE_NAME:latest
 				""";
-	}
-
-	private void circleciDir() throws IOException {
-		File file = new File("./.circleci");
-		if (!file.exists()) {
-			if (!file.mkdir()) {
-				throw new IOException("Couldn't create directory");
-			}
-		}
 	}
 
 	private void githubDir() throws IOException {

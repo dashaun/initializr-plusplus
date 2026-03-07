@@ -2,41 +2,44 @@ package dev.dashaun.shell.initializr.plusplus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 final class HkConfigRenderer {
 
 	private HkConfigRenderer() {
 	}
 
+	private static final List<LinterDiscovery> LINTER_DISCOVERIES = List.of(
+			new LinterDiscovery("github:google/google-java-format", "google_java_format",
+					HkProjectAnalyzer.ProjectAnalysis::hasJava),
+			new LinterDiscovery("npm:markdownlint-cli", "markdown", HkProjectAnalyzer.ProjectAnalysis::hasMarkdown),
+			new LinterDiscovery("npm:dclint", "dclint", HkProjectAnalyzer.ProjectAnalysis::hasCompose),
+			new LinterDiscovery("pipx:sqlfluff", "sql_fluff", analysis -> analysis.sqlDialect() != null),
+			new LinterDiscovery("actionlint", "actionlint", HkProjectAnalyzer.ProjectAnalysis::hasGithubActions),
+			new LinterDiscovery("yamlfmt", "yaml", HkProjectAnalyzer.ProjectAnalysis::hasYaml),
+			new LinterDiscovery("shellcheck", "shellcheck", HkProjectAnalyzer.ProjectAnalysis::hasShell),
+			new LinterDiscovery("hadolint", "hadolint", HkProjectAnalyzer.ProjectAnalysis::hasDockerfile));
+
 	static List<Tool> requiredTools(HkProjectAnalyzer.ProjectAnalysis analysis) {
 		List<Tool> tools = new ArrayList<>();
 		tools.add(new Tool("hk"));
 		tools.add(new Tool("pkl"));
-		if (analysis.hasJava()) {
-			tools.add(new Tool("github:google/google-java-format"));
-		}
-		if (analysis.hasMarkdown()) {
-			tools.add(new Tool("npm:markdownlint-cli"));
-		}
-		if (analysis.hasCompose()) {
-			tools.add(new Tool("npm:dclint"));
-		}
-		if (analysis.hasGithubActions()) {
-			tools.add(new Tool("actionlint"));
-		}
-		if (analysis.hasYaml()) {
-			tools.add(new Tool("yamlfmt"));
-		}
-		if (analysis.hasShell()) {
-			tools.add(new Tool("shellcheck"));
-		}
-		if (analysis.hasDockerfile()) {
-			tools.add(new Tool("hadolint"));
-		}
-		if (analysis.sqlDialect() != null) {
-			tools.add(new Tool("pipx:sqlfluff"));
+		for (LinterDiscovery discovery : LINTER_DISCOVERIES) {
+			if (discovery.predicate().test(analysis)) {
+				tools.add(new Tool(discovery.toolKey()));
+			}
 		}
 		return tools;
+	}
+
+	static List<String> discoveredLinterNames(HkProjectAnalyzer.ProjectAnalysis analysis) {
+		List<String> linters = new ArrayList<>();
+		for (LinterDiscovery discovery : LINTER_DISCOVERIES) {
+			if (discovery.predicate().test(analysis)) {
+				linters.add(discovery.linterName());
+			}
+		}
+		return linters;
 	}
 
 	static String renderHkConfig(HkProjectAnalyzer.ProjectAnalysis analysis) {
@@ -139,6 +142,10 @@ final class HkConfigRenderer {
 	}
 
 	record Tool(String key) {
+	}
+
+	private record LinterDiscovery(String toolKey, String linterName,
+			Predicate<HkProjectAnalyzer.ProjectAnalysis> predicate) {
 	}
 
 }

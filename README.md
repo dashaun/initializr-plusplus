@@ -67,7 +67,7 @@ Pipeline Commands
        multi-arch-manifests: pipelines to create multi-architecture manifests
 
 Mise Commands
-       setup-mise-java: Create mise.toml and set Java tool from mise-java catalog
+       setup-mise: Create mise.toml and set Java tool from mise-java catalog
        setup-mise-hk: Configure hk in an existing mise.toml
 
 Pom File Commands

@@ -15,6 +15,7 @@ import org.springframework.shell.component.SingleItemSelector;
 import org.springframework.shell.component.support.SelectorItem;
 import org.springframework.shell.Availability;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.shell.style.TemplateExecutor;
 import org.springframework.shell.standard.ShellComponent;
@@ -41,6 +42,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 @ShellComponent
+@RegisterReflectionForBinding(MiseCommands.MiseJvmEntry.class)
 public class MiseCommands {
 
 	private static final File POM_FILE = new File("./pom.xml");
@@ -72,7 +74,7 @@ public class MiseCommands {
 		this.templateExecutorProvider = templateExecutorProvider;
 	}
 
-	@ShellMethod(value = "Create mise.toml", key = "setup-mise-java")
+	@ShellMethod(value = "Create mise.toml", key = "setup-mise")
 	@ShellMethodAvailability("setupMiseJavaAvailability")
 	public String setupMiseJava() {
 		try {
@@ -96,14 +98,14 @@ public class MiseCommands {
 							.formatted(operatingSystem, architecture)
 						: "No eligible JDK choices were returned by mise-java for %s/%s."
 							.formatted(operatingSystem, architecture);
-			}
+				}
 
-			String defaultChoice = selectDefaultChoice(filteredOptions, pomJavaMajor, hasNativePlugin);
-			String selectedChoice = promptForChoice(filteredOptions, defaultChoice, pomJavaMajor, hasNativePlugin);
-			writeMiseToml(selectedChoice);
-			return "Successfully created mise.toml with java = '%s'.".formatted(selectedChoice);
-		}
-		catch (Exception e) {
+				String defaultChoice = selectDefaultChoice(filteredOptions, pomJavaMajor, hasNativePlugin);
+				String selectedChoice = promptForChoice(filteredOptions, defaultChoice, pomJavaMajor, hasNativePlugin);
+					MiseConfigManager.writeJavaTool(MISE_FILE.toPath(), selectedChoice);
+					return "Successfully created mise.toml with java = '%s'.".formatted(selectedChoice);
+			}
+			catch (Exception e) {
 			return "There was a problem creating mise.toml: " + e.getMessage();
 		}
 	}
@@ -113,21 +115,19 @@ public class MiseCommands {
 	public String setupMiseHk() {
 		try {
 			HkProjectAnalyzer.ProjectAnalysis analysis = HkProjectAnalyzer.analyze(Path.of("."), readPomModelIfPresent());
-			String miseToml = Files.readString(MISE_FILE.toPath());
-			for (HkConfigRenderer.Tool tool : HkConfigRenderer.requiredTools(analysis)) {
-				miseToml = MiseTomlEditor.upsertAssignment(miseToml, "tools", tool.key(), "\"latest\"");
-			}
-			miseToml = MiseTomlEditor.upsertAssignment(miseToml, "tools", "hk",
-					"{ version = \"latest\", postinstall = \"hk install --mise\" }");
-			miseToml = MiseTomlEditor.upsertAssignment(miseToml, "env", "HK_MISE", "1");
-			miseToml = MiseTomlEditor.upsertAssignment(miseToml, "tasks.pre-commit", "run", "\"hk run pre-commit\"");
-			Files.writeString(MISE_FILE.toPath(), miseToml);
+			MiseConfigManager.configureHk(MISE_FILE.toPath(), HkConfigRenderer.requiredTools(analysis));
 			Files.writeString(Path.of("hk.pkl"), HkConfigRenderer.renderHkConfig(analysis));
 			if (analysis.sqlDialect() != null) {
 				Files.writeString(Path.of(".sqlfluff"), HkConfigRenderer.renderSqlfluffConfig(analysis.sqlDialect()));
 			}
-			return analysis.sqlDialect() == null ? "Successfully configured hk in mise.toml and wrote hk.pkl."
+			String baseMessage = analysis.sqlDialect() == null
+					? "Successfully configured hk in mise.toml and wrote hk.pkl."
 					: "Successfully configured hk in mise.toml and wrote hk.pkl and .sqlfluff.";
+			List<String> discoveredLinters = HkConfigRenderer.discoveredLinterNames(analysis);
+			String infoMessage = discoveredLinters.isEmpty()
+					? "Linters discovered and added to hk.pkl: none"
+					: "Linters discovered and added to hk.pkl: " + String.join(", ", discoveredLinters);
+			return baseMessage + "\n" + infoMessage;
 		}
 		catch (Exception e) {
 			return "There was a problem configuring hk: " + e.getMessage();
@@ -242,14 +242,6 @@ public class MiseCommands {
 		SingleItemSelector.SingleItemSelectorContext<String, SelectorItem<String>> context = selector
 			.run(SingleItemSelector.SingleItemSelectorContext.empty());
 		return context.getResultItem().map(SelectorItem::getItem).orElse(defaultChoice);
-	}
-
-	private void writeMiseToml(String javaChoice) throws IOException {
-		String content = """
-				[tools]
-				java = "%s"
-				""".formatted(javaChoice);
-		Files.writeString(MISE_FILE.toPath(), content);
 	}
 
 	private Model readPomModelIfPresent() throws Exception {
@@ -420,7 +412,7 @@ public class MiseCommands {
 	}
 
 	@JsonIgnoreProperties(ignoreUnknown = true)
-	private record MiseJvmEntry(
+	record MiseJvmEntry(
 			String vendor,
 			@JsonProperty("java_version") String javaVersion,
 			@JsonProperty("jvm_impl") String jvmImpl,

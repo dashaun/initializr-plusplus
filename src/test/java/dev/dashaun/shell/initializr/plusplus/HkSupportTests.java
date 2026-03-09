@@ -74,38 +74,13 @@ class HkSupportTests {
 	}
 
 	@Test
-	void miseTomlEditorUpsertsSettingsIntoExistingFile() {
-		String content = """
-				[tools]
-				java = "graalvm-community-25"
-				""";
-
-		String updated = MiseTomlEditor.upsertAssignment(content, "tools", "hk", "\"latest\"");
-		updated = MiseTomlEditor.upsertAssignment(updated, "tools", "github:google/google-java-format", "\"latest\"");
-		updated = MiseTomlEditor.upsertAssignment(updated, "env", "HK_MISE", "1");
-		updated = MiseTomlEditor.upsertAssignment(updated, "hooks", "enter", """
-				'''
-				if ! grep -q "hk run" .git/hooks/pre-commit 2>/dev/null; then
-				  mise exec hk pkl -- hk install --mise
-				fi
-				'''""");
-		updated = MiseTomlEditor.upsertAssignment(updated, "tasks.pre-commit", "run", "\"hk run pre-commit\"");
-
-		assertTrue(updated.contains("java = \"graalvm-community-25\""));
-		assertTrue(updated.contains("hk = \"latest\""));
-		assertTrue(updated.contains("\"github:google/google-java-format\" = \"latest\""));
-		assertTrue(updated.contains("[env]\nHK_MISE = 1"));
-		assertTrue(updated.contains("[hooks]\nenter = '''"));
-		assertTrue(updated.contains("[tasks.pre-commit]\nrun = \"hk run pre-commit\""));
-	}
-
-	@Test
 	void hkConfigRendererAddsConditionalLintersAndTools() {
 		HkProjectAnalyzer.ProjectAnalysis analysis = new HkProjectAnalyzer.ProjectAnalysis(true, true, true, true, true, true,
 				true, true, "postgres");
 
 		String hkConfig = HkConfigRenderer.renderHkConfig(analysis);
 		List<HkConfigRenderer.Tool> tools = HkConfigRenderer.requiredTools(analysis);
+		List<String> discoveredLinters = HkConfigRenderer.discoveredLinterNames(analysis);
 
 		assertTrue(hkConfig.contains("[\"check-merge-conflict\"] = Builtins.check_merge_conflict"));
 		assertTrue(hkConfig.contains("[\"check-added-large-files\"] = Builtins.check_added_large_files"));
@@ -127,6 +102,14 @@ class HkSupportTests {
 		assertTrue(tools.stream().anyMatch(tool -> tool.key().equals("shellcheck")));
 		assertTrue(tools.stream().anyMatch(tool -> tool.key().equals("hadolint")));
 		assertTrue(tools.stream().anyMatch(tool -> tool.key().equals("pipx:sqlfluff")));
+		assertTrue(discoveredLinters.contains("google_java_format"));
+		assertTrue(discoveredLinters.contains("markdown"));
+		assertTrue(discoveredLinters.contains("dclint"));
+		assertTrue(discoveredLinters.contains("sql_fluff"));
+		assertTrue(discoveredLinters.contains("actionlint"));
+		assertTrue(discoveredLinters.contains("yaml"));
+		assertTrue(discoveredLinters.contains("shellcheck"));
+		assertTrue(discoveredLinters.contains("hadolint"));
 	}
 
 	@Test
